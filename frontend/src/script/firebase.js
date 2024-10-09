@@ -1,8 +1,7 @@
-const { initializeApp } = require("https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js");
-require("dotenv/config")
+import { initializeApp } from "firebase/app"
 
 const firebaseConfig = {
-    apiKey: process.env.API_KEY,
+    apiKey: process.env.NEXT_APP_API_KEY,
     authDomain: "tech-tide-to-do.firebaseapp.com",
     databaseURL: "https://tech-tide-to-do-default-rtdb.firebaseio.com",
     projectId: "tech-tide-to-do",
