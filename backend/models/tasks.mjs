@@ -35,4 +35,6 @@ async function deleteTask({ id, userId }) {
   return task;
 }
 
-export { createTask, deleteTask, getTaskById, getTasks, updateTask };
+const model = { createTask, deleteTask, getTaskById, getTasks, updateTask };
+
+export default model;

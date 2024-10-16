@@ -17,7 +17,7 @@ async function createUser(req, res) {
  * @param {import("express").Response} res
  */
 async function getUser(req, res) {
-  const { id } = req.query;
+  const { id } = req.params;
   const user = await service.getUser({ id });
   return res.status(200).json({ user });
 }
@@ -29,7 +29,7 @@ async function getUser(req, res) {
  */
 async function updateUser(req, res) {
   const { user } = req.body;
-  const { id } = req.query;
+  const { id } = req.params;
   const created = await service.updateUser({ id, ...user });
   return res.status(200).json({ created });
 }
@@ -40,7 +40,7 @@ async function updateUser(req, res) {
  * @param {import("express").Response} res
  */
 async function deleteUser(req, res) {
-  const { id } = req.query;
+  const { id } = req.params;
   const user = await service.deleteUser({ id });
   return res.status(203).json({ user });
 }

@@ -23,4 +23,6 @@ async function deleteUser({ id }) {
   return user;
 }
 
-export { createUser, deleteUser, getUser, updateUser };
+const model = { createUser, deleteUser, getUser, updateUser };
+
+export default model;

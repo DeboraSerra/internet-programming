@@ -33,4 +33,6 @@ async function deleteUser(obj) {
   return user;
 }
 
-export { createUser, deleteUser, getUser, updateUser };
+const service = { createUser, deleteUser, getUser, updateUser };
+
+export default service;
