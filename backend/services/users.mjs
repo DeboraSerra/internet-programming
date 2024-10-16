@@ -13,7 +13,7 @@ async function createUser(userObj) {
 }
 
 async function getUser(obj) {
-  const { data: id, success, error } = idSchema.safeParse(obj);
+  const { data: id, success, error } = idSchema.safeParse(obj.id);
   if (!success) throw new Error(error);
   const user = await model.getUser({ id });
   return user;
@@ -27,7 +27,7 @@ async function updateUser(userObj) {
 }
 
 async function deleteUser(obj) {
-  const { data: id, success, error } = idSchema.safeParse(obj);
+  const { data: id, success, error } = idSchema.safeParse(obj.id);
   if (!success) throw new Error(error);
   const user = await model.deleteUser({ id });
   return user;
