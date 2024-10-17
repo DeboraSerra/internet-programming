@@ -14,7 +14,7 @@ const updateUserSchema = z.object({
 const createTaskSchema = z.object({
   name: z.string().min(4),
   description: z.string().optional(),
-  date: z.date(),
+  date: z.date({ coerce: true }),
   priority: z.number().min(1).max(5).optional(),
   userId: z.string().length(24),
 });

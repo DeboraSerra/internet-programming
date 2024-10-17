@@ -55,6 +55,18 @@ async function updateTask(req, res) {
  * @param {import("express").Request} req
  * @param {import("express").Response} res
  */
+async function completeTask(req, res) {
+  const { id } = req.params;
+  const { userId } = req.query;
+  const updated = await service.completeTask({ id, userId });
+  return res.status(200).json({ task: updated });
+}
+
+/**
+ *
+ * @param {import("express").Request} req
+ * @param {import("express").Response} res
+ */
 async function deleteTask(req, res) {
   const { id } = req.params;
   const { userId } = req.query;
@@ -65,4 +77,11 @@ async function deleteTask(req, res) {
   return res.status(200).json({ task });
 }
 
-export { createTask, deleteTask, getTaskById, getTasks, updateTask };
+export {
+  completeTask,
+  createTask,
+  deleteTask,
+  getTaskById,
+  getTasks,
+  updateTask,
+};
