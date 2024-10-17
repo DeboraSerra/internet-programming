@@ -38,6 +38,18 @@ async function updateTask(taskObj) {
   return updated;
 }
 
+async function completeTask({ userId, id }) {
+  const userIdParsed = idSchema.safeParse(userId);
+  if (!userIdParsed.success) throw new Error(userIdParsed.error);
+  const taskId = idSchema.safeParse(id);
+  if (!taskId.success) throw new Error(taskId.error);
+  const updated = await model.completeTask({
+    id: taskId.data,
+    userId: userIdParsed.data,
+  });
+  return updated;
+}
+
 async function deleteTask({ id, userId }) {
   const userIdParsed = idSchema.safeParse(userId);
   if (!userId.success) throw new Error(userIdParsed.error);
@@ -56,6 +68,7 @@ const service = {
   getTaskById,
   getTasks,
   updateTask,
+  completeTask,
 };
 
 export default service;
