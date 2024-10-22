@@ -34,6 +34,7 @@ const emailSchema = z.string().email();
 export {
   createTaskSchema,
   createUserSchema,
+  emailSchema,
   idSchema,
   updateTaskSchema,
   updateUserSchema,

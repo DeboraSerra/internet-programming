@@ -1,5 +1,6 @@
 import {
   createUserSchema,
+  emailSchema,
   idSchema,
   updateUserSchema,
 } from "../helpers/schemas.mjs";
