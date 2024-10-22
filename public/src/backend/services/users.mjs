@@ -13,9 +13,9 @@ async function createUser(userObj) {
 }
 
 async function getUser(obj) {
-  const { data: id, success, error } = idSchema.safeParse(obj.id);
-  if (!success) throw new Error(error);
-  const user = await model.getUser({ id });
+  const { data: email, success, error } = emailSchema.safeParse(obj.email);
+  if (!success) return false;
+  const user = await model.getUser({ email });
   return user;
 }
 
