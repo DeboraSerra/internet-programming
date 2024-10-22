@@ -1,0 +1,32 @@
+.input {
+  background-color: transparent;
+  border-bottom: 1px solid #94a3b8;
+  padding: 8px 4px;
+  border-radius: 4px;
+
+  &:focus {
+    outline: none;
+    background-color: rgb(148, 163, 184, 0.14);
+  }
+}
+
+.input__container {
+  position: relative;
+}
+
+.input__label {
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: 0.2s;
+}
+
+.input:not(.input:placeholder-shown), .input:focus {
+  padding: 12px 4px 4px;
+}
+
+.input:not(.input:placeholder-shown) ~ .input__label,
+.input:focus ~ .input__label {
+  transform: scale(0.7) translate(-20%, -140%);
+}
