@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import * as auth from "../../../assets/script/auth";
 
 function Button({
@@ -51,15 +50,20 @@ function Button({
     const url = await auth.createAccount({ email, password });
     redirect(url);
   }
+
+  const actions = {
+    passwordLogin,
+    googleLogin,
+    createAccount,
+  };
+
   return (
     <button
       className={className}
       type={type}
       onClick={(e) => {
         type === "submit" && e.preventDefault();
-        action === "passwordLogin" && passwordLogin();
-        action === "googleLogin" && googleLogin();
-        action === "createAccount" && createAccount();
+        actions[action]();
       }}
     >
       {text}

@@ -12,7 +12,9 @@ export default function RootLayout({ children }) {
       <head>
         <script src={JSON.parse(JSON.stringify(initialize))}></script>
       </head>
-      <body>{children}</body>
+      <body>
+        <div className='container mx-auto'>{children}</div>
+      </body>
     </html>
   );
 }
