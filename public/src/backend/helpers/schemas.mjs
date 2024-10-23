@@ -29,9 +29,12 @@ const updateTaskSchema = z.object({
 
 const idSchema = z.string().length(24);
 
+const emailSchema = z.string().email();
+
 export {
   createTaskSchema,
   createUserSchema,
+  emailSchema,
   idSchema,
   updateTaskSchema,
   updateUserSchema,
