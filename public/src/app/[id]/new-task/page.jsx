@@ -1,9 +1,7 @@
-function NewTask() {
-  return (
-    <div>
-      <h1>new task</h1>
-    </div>
-  );
+import NewTask from "@/components/NewTask";
+
+function NewTaskPage() {
+  return <NewTask />;
 }
 
-export default NewTask;
+export default NewTaskPage;

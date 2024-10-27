@@ -1,9 +1,7 @@
-function Profile() {
-  return (
-    <div>
-      <h1>Profile</h1>
-    </div>
-  );
+import Profile from "@/components/Profile";
+
+function ProfilePage() {
+  return <Profile />;
 }
 
-export default Profile;
+export default ProfilePage;
