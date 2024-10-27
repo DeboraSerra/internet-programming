@@ -15,67 +15,39 @@ function Button({
     //add email validation
     return true;
   }
+
   function validatePassword(password) {
     /**
      * first rule: 8 characters long at least.
      * Second rule: At least 1 special characters.
      * Third rule: One Caps letter.
-     * Forth rule: One lower case letter. 
+     * Forth rule: One lower case letter.
      * Fifth rule: Require a number.
      */
-    let isValid = false
-    if(password.length < 8) {
-      isValid = false
+    if (/\s/g.test(password)) {
+      return false;
     }
-    else {
-      isValid = true
+    const specialCharacterRegex = /\W/;
+    const upperCaseRegex = /[A-Z]/;
+    const lowerCaseRegex = /[a-z]/;
+    const numberRegex = /\d/;
+
+    const urlRegex =
+      /[(http(s)?)?://(www\.)?a-zA-Z0-9@:%\._+~#=]{2,256}\.[a-z]{2,6}\b([-\d@:%_+\.~#?&//=]*)/gi;
+    const scriptRegex = /<[^>]+>/g;
+    if (urlRegex.test(password) || scriptRegex.test(password)) {
+      return false;
     }
-    const specialCharacters = ["@", "!", "?", "¡", "¿", "$", "%", "&", "(", ")"]
-    for(const character of specialCharacters) {
 
-      if(!password.includes(character)){
-        isValid = false
-      }
-      else {
-        isValid = true
-        break
-      }
-    }
-    const letters = ["A","B","C","D","E","F","G","H","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Z"]
-    for(const character of letters) {
-
-      if(!password.includes(character)){
-        isValid = false
-      }
-      else {
-        isValid = true
-        break
-      }
-    } 
-    for(const character of letters) {
-
-      if(!password.includes(character.toLowerCase())){
-        isValid = false
-      }
-      else {
-        isValid = true
-        break
-      }
-    } 
-    const numbers = ["0","1","2","3","4","5","6","7","8","9"]
-    for(const number of numbers) {
-
-      if(!password.includes(number)){
-        isValid = false
-      }
-      else {
-        isValid = true
-        break
-      }
-    } 
-    return isValid;
+    return (
+      password.length >= 8 &&
+      specialCharacterRegex.test(password) &&
+      upperCaseRegex.test(password) &&
+      lowerCaseRegex.test(password) &&
+      numberRegex.test(password)
+    );
   }
-  
+
   const redirect = (url) => {
     if (url) {
       router.push(url);
