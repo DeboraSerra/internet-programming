@@ -10,3 +10,8 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.filters {
+  background-image: url(../../assets/main-bg.avif);
+  background-repeat: no-repeat;
+  background-size: cover;
+}

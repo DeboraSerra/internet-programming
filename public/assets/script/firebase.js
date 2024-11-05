@@ -1,7 +1,6 @@
 import * as firebase from "firebase/app";
-import { initializeAuth, getAuth } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import firebaseConfig from "./config.js";
-
 
 let app;
 
