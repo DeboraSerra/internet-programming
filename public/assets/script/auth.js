@@ -9,14 +9,13 @@ import {
 import { auth } from "./firebase";
 
 export const onLoadUser = async () => {
-  let url;
+  const auth = getAuth();
+  const user = auth.currentUser;
   try {
-    const auth = getAuth();
-    const user = auth.currentUser;
     if (user) {
       const response = await fetch(`/api/user?email=${user.email}`);
       const data = await response.json();
-      return data.user ? (url = `/${data.user.id}/dashboard`) : "/";
+      return data.user ? `/${data.user.id}/dashboard` : "/";
     }
   } catch (e) {
     console.log(e);
@@ -31,16 +30,19 @@ export const googleLogin = async () => {
     let user = data.user;
 
     let response = await fetch(`/api/user?email=${user.email}`);
-    if (!response.status >= 400) {
+    if (response.status >= 400) {
       response = await fetch(`/api/user`, {
         method: "POST",
         body: JSON.stringify({ email: user.email }),
       });
     }
+    if (response.status >= 400) throw new Error("");
     const foundUser = await response.json();
     return `/${foundUser.user.id}/dashboard`;
   } catch (error) {
     console.error(error);
+    const user = auth.currentUser;
+    user.delete();
   }
 };
 
@@ -77,6 +79,8 @@ export const createAccount = async ({ email, password }) => {
     return `/${foundUser.user.id}/dashboard`;
   } catch (e) {
     console.log(e);
+    const user = auth.currentUser;
+    user.delete();
   }
 };
 
