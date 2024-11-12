@@ -3,10 +3,12 @@ import z from "zod";
 const createUserSchema = z.object({
   name: z.string().min("4").optional(),
   email: z.string().email(),
+  photo: z.string().url().optional(),
 });
 
 const updateUserSchema = z.object({
   name: z.string().min("4").optional(),
+  photo: z.string().url().optional(),
   email: z.string().email(),
   id: z.string().length(24),
 });
