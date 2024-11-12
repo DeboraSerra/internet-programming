@@ -1,6 +1,9 @@
 "use client";
 import { useState } from "react";
+import constants from "@/script/constants";
 import "./style.css";
+
+const newTaskUrl = constants.TASK_URL + "?userId=67311a177bb55a6ce6df4947"
 
 function NewTask() {
   const [date, setDate] = useState("");
