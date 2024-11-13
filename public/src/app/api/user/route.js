@@ -20,13 +20,13 @@ export const GET = async (req) => {
 };
 
 export const POST = async (req) => {
-  const { email, name } = await req.json();
+  const { email, name, photo } = await req.json();
   if (!email) {
     return new Response(JSON.stringify({ message: "email is required" }), {
       status: 400,
     });
   }
-  const user = await service.createUser({ email, name });
+  const user = await service.createUser({ email, name, photo });
   if (!user) {
     return new Response(JSON.stringify({ message: "something went wrong" }), {
       status: 400,
