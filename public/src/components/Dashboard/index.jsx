@@ -14,7 +14,7 @@ function Dashboard() {
         { name: 'Web development assignment', priority: 'medium' },
       ],
     },
-    // Add more dates and tasks as needed
+
   ];
 
   return (
