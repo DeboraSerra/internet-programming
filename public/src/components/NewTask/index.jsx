@@ -13,6 +13,11 @@ function NewTask() {
   const [priority, setPriority] = useState(1);
   const [repeat, setRepeat] = useState(false);
 
+async function submitForm(e) {
+  e.preventDefault()
+  console.log("prevent")
+}
+
   return (
     <div>
       <form action=''>
@@ -72,7 +77,7 @@ function NewTask() {
           <label htmlFor="times" id="times-label">Number of times<input type="number" name="times" id="times" disabled={!repeat} /></label>
         </div>
 
-        <button type='submit' className="submit"> Submit </button>
+        <button type='submit' className="submit" onSubmit={submitForm}> Submit </button>
       </form>
     </div>
   );
