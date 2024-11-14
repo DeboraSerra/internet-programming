@@ -2,21 +2,20 @@
 
 import constants from "@/script/constants";
 import { useState } from "react";
-import Input from "../Input";
+import Input from "../ControlledInput"
 import "./profile.css";
 
 const getUserUrl = constants.USER_URL + `?email=jfsnow00@gmail.com`; // method: GET
-const updateUserUrl = constants.USER_URL + `?id=673544e9acc052f5aa69184d` // method: PUT
+const updateUserUrl = constants.USER_URL + `?id=673544e9acc052f5aa69184d`; // method: PUT
 
 const Profile = () => {
   const [profile, setProfile] = useState({
-    username: "Anna Avetisyan",
+    name: "Anna Avetisyan",
     birthday: "2000-01-01",
     phone: "818 123 4567",
-    instagram: "@anna_insta",
     email: "info@techtide.co",
     password: "123456",
-    profilePicture: "https://cdnstorage.sendbig.com/unreal/female.webp",
+    photo: "https://cdnstorage.sendbig.com/unreal/female.webp",
   });
 
   const [editMode, setEditMode] = useState(false);
@@ -98,12 +97,8 @@ const Profile = () => {
   return (
     <div className='profile-container'>
       <div className='profile-header'>
-        <img
-          src={profile.profilePicture}
-          alt='Profile'
-          className='profile-picture'
-        />
-        <h2>{profile.username}</h2>
+        <img src={profile.photo} alt='Profile' className='profile-picture' />
+        <h2>{profile.name}</h2>
       </div>
 
       {!isChangingPassword && (
@@ -111,18 +106,28 @@ const Profile = () => {
           <div className='profile-info'>
             <div className='profile-field'>
               {editMode ? (
-                <Input id='username' label='User Name' />
+                <Input
+                  id='name'
+                  label='User Name'
+                  value={profile.name}
+                  onChange={handleChange}
+                />
               ) : (
                 <>
                   <span className='label'>User Name:</span>
-                  <span className='profile-text'>{profile.username}</span>
+                  <span className='profile-text'>{profile.name}</span>
                 </>
               )}
             </div>
 
             <div className='profile-field'>
               {editMode ? (
-                <Input id='phone' label='Phone' />
+                <Input
+                  id='phone'
+                  label='Phone'
+                  value={profile.phone}
+                  onChange={handleChange}
+                />
               ) : (
                 <>
                   <span className='label'>Phone:</span>
@@ -170,12 +175,26 @@ const Profile = () => {
 
       {isChangingPassword && (
         <div className='change-password-form'>
-          <Input id='oldPassword' label='Old Password' type='password' />
-          <Input id='newPassword' label='New Password' type='password' />
+          <Input
+            id='oldPassword'
+            label='Old Password'
+            type='password'
+            value={passwordData.oldPassword}
+            onChange={handlePasswordChange}
+          />
+          <Input
+            id='newPassword'
+            label='New Password'
+            type='password'
+            value={passwordData.newPassword}
+            onChange={handlePasswordChange}
+          />
           <Input
             id='confirmPassword'
             label='Confirm Password'
             type='password'
+            value={passwordData.confirmPassword}
+            onChange={handlePasswordChange}
           />
 
           <button
