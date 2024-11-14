@@ -135,9 +135,9 @@ function Dashboard() {
       <div>
         {parsedTasks.map((it) => (
           <>
-          <h2 className="task-header border-b border-slate-400">{new Date(it.date).toLocaleDateString()}</h2>
+          <h2 className="date-header font-bold text-lg py-3 border-b border-slate-400">{new Date(it.date).toLocaleDateString()}</h2>
           {it.tasks.map(task => (<div key={task.id} className="task">
-            <div className="task-header border-b border-slate-400">
+            <div className="task-header flex items-center gap-3 py-2 px-3 border-b border-slate-400">
               <input type="checkbox" checked={task.completed} readOnly className="task-checkbox" />
               <span className="task-name">{task.name}</span>
               <span className={`task-priority priority-${task.priority}`}>
