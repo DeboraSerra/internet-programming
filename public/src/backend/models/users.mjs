@@ -1,7 +1,7 @@
 import prisma from "./index.mjs";
 
-async function createUser({ name, email, photo }) {
-  const newUser = await prisma.user.create({ data: { name, email, photo } });
+async function createUser({ name, email, photo, birthday }) {
+  const newUser = await prisma.user.create({ data: { name, email, photo, birthday } });
   return newUser;
 }
 
@@ -10,9 +10,9 @@ async function getUser({ email }) {
   return user;
 }
 
-async function updateUser({ name, email, id, photo }) {
+async function updateUser({ name, email, id, photo, birthday }) {
   const user = await prisma.user.update({
-    data: { name, email, photo },
+    data: { name, email, photo, birthday },
     where: { id },
   });
   return user;

@@ -4,6 +4,7 @@ const createUserSchema = z.object({
   name: z.string().min("4").optional(),
   email: z.string().email(),
   photo: z.string().url().optional(),
+  birthday: z.date({ coerce: true }).optional(),
 });
 
 const updateUserSchema = z.object({
@@ -11,6 +12,7 @@ const updateUserSchema = z.object({
   photo: z.string().url().optional(),
   email: z.string().email(),
   id: z.string().length(24),
+  birthday: z.date({ coerce: true }).optional(),
 });
 
 const createTaskSchema = z.object({
