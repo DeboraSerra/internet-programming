@@ -1,22 +1,21 @@
 "use client";
 
 import constants from "@/script/constants";
-import { useState, useEffect } from "react";
-import Input from "../Input";
+import { useState } from "react";
+import Input from "../ControlledInput"
 import "./profile.css";
 
-const getUserUrl = constants.USER_URL + `?email=jfsnow00@gmail.com`; // método: GET
-const updateUserUrl = constants.USER_URL + `?id=673544e9acc052f5aa69184d`; // método: PUT
+const getUserUrl = constants.USER_URL + `?email=jfsnow00@gmail.com`; // method: GET
+const updateUserUrl = constants.USER_URL + `?id=673544e9acc052f5aa69184d`; // method: PUT
 
 const Profile = () => {
   const [profile, setProfile] = useState({
-    username: "",
-    birthday: "",
-    phone: "",
-    instagram: "",
-    email: "",
-    password: "",
-    profilePicture: "",
+    name: "Anna Avetisyan",
+    birthday: "2000-01-01",
+    phone: "818 123 4567",
+    email: "info@techtide.co",
+    password: "123456",
+    photo: "https://cdnstorage.sendbig.com/unreal/female.webp",
   });
 
   const [editMode, setEditMode] = useState(false);
@@ -130,11 +129,7 @@ const Profile = () => {
   return (
     <div className='profile-container'>
       <div className='profile-header'>
-        <img
-          src={profile.profilePicture || 'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg'}
-          alt='Profile'
-          className='profile-picture'
-        />
+        <img src={profile.photo} alt='Profile' className='profile-picture' />
         <h2>{profile.name}</h2>
       </div>
 
@@ -144,11 +139,10 @@ const Profile = () => {
             <div className='profile-field'>
               {editMode ? (
                 <Input
-                  id='username'
+                  id='name'
                   label='User Name'
                   value={profile.name}
                   onChange={handleChange}
-                  name='username'
                 />
               ) : (
                 <>
@@ -165,7 +159,6 @@ const Profile = () => {
                   label='Phone'
                   value={profile.phone}
                   onChange={handleChange}
-                  name='phone'
                 />
               ) : (
                 <>
@@ -220,7 +213,6 @@ const Profile = () => {
             type='password'
             value={passwordData.oldPassword}
             onChange={handlePasswordChange}
-            name='oldPassword'
           />
           <Input
             id='newPassword'
@@ -228,7 +220,6 @@ const Profile = () => {
             type='password'
             value={passwordData.newPassword}
             onChange={handlePasswordChange}
-            name='newPassword'
           />
           <Input
             id='confirmPassword'
@@ -236,7 +227,6 @@ const Profile = () => {
             type='password'
             value={passwordData.confirmPassword}
             onChange={handlePasswordChange}
-            name='confirmPassword'
           />
 
           <button
