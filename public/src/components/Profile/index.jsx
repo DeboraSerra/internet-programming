@@ -72,10 +72,10 @@ const Profile = () => {
           )}
         </div>
 
-        <div className="profile-field">
+        {/* <div className="profile-field">
           <label>Birth Date:</label>
           <p className="profile-text">{profile.birthday}</p>
-        </div>
+        </div> */}
 
         <div className="profile-field">
           <label>Email:</label>
