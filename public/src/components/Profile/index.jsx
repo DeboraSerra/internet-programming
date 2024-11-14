@@ -5,8 +5,8 @@ import { useState } from "react";
 import Input from "../Input";
 import "./profile.css";
 
-const getUserUrl = constants.USER_URL + `?email=debora.r.serra@gmail.com`;
-const updateUserUrl = constants.USER_URL + `?id`
+const getUserUrl = constants.USER_URL + `?email=jfsnow00@gmail.com`; // method: GET
+const updateUserUrl = constants.USER_URL + `?id=673544e9acc052f5aa69184d` // method: PUT
 
 const Profile = () => {
   const [profile, setProfile] = useState({
