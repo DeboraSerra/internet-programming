@@ -1,15 +1,16 @@
 "use client";
 
-import React, { useState } from 'react';
-import './Profile.css';
+import { useState } from "react";
+import Input from "../Input";
+import "./profile.css";
 
 const Profile = () => {
   const [profile, setProfile] = useState({
-    username: 'Anna Avetisyan',
-    birthday: '2000-01-01',
-    phone: '818 123 4567',
-    instagram: '@anna_insta',
-    email: 'info@techtide.co',
+    username: "Anna Avetisyan",
+    birthday: "2000-01-01",
+    phone: "818 123 4567",
+    instagram: "@anna_insta",
+    email: "info@techtide.co",
     password: "123456",
     profilePicture: "https://cdnstorage.sendbig.com/unreal/female.webp",
   });
@@ -17,9 +18,9 @@ const Profile = () => {
   const [editMode, setEditMode] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [passwordData, setPasswordData] = useState({
-    oldPassword: '',
-    newPassword: '',
-    confirmPassword: ''
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: "",
   });
 
   const handleChange = (e) => {
@@ -44,7 +45,11 @@ const Profile = () => {
 
   const handleSavePassword = () => {
     // Validação de senha
-    if (!passwordData.oldPassword || !passwordData.newPassword || !passwordData.confirmPassword) {
+    if (
+      !passwordData.oldPassword ||
+      !passwordData.newPassword ||
+      !passwordData.confirmPassword
+    ) {
       alert("Please fill in all password fields!");
       return;
     }
@@ -65,12 +70,12 @@ const Profile = () => {
     }
     setProfile((prevProfile) => ({
       ...prevProfile,
-      password: passwordData.newPassword, 
+      password: passwordData.newPassword,
     }));
 
     // Limpa os dados da senha
     setIsChangingPassword(false);
-    setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' });
+    setPasswordData({ oldPassword: "", newPassword: "", confirmPassword: "" });
     alert("Password changed successfully!");
   };
 
@@ -83,75 +88,70 @@ const Profile = () => {
 
   const handleCancelPasswordChange = () => {
     setIsChangingPassword(false);
-    setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' });
+    setPasswordData({ oldPassword: "", newPassword: "", confirmPassword: "" });
   };
 
   return (
-    <div className="profile-container">
-      <div className="profile-header">
+    <div className='profile-container'>
+      <div className='profile-header'>
         <img
           src={profile.profilePicture}
-          alt="Profile"
-          className="profile-picture"
+          alt='Profile'
+          className='profile-picture'
         />
         <h2>{profile.username}</h2>
       </div>
 
       {!isChangingPassword && (
         <>
-          <div className="profile-info">
-            <div className="profile-field">
-              <label>User Name:</label>
+          <div className='profile-info'>
+            <div className='profile-field'>
               {editMode ? (
-                <input
-                  type="text"
-                  name="username"
-                  value={profile.username}
-                  onChange={handleChange}
-                  className="input-field"
-                />
+                <Input id='username' label='User Name' />
               ) : (
-                <p className="profile-text">{profile.username}</p>
+                <>
+                  <span className='label'>User Name:</span>
+                  <span className='profile-text'>{profile.username}</span>
+                </>
               )}
             </div>
 
-            <div className="profile-field">
-              <label>Phone:</label>
+            <div className='profile-field'>
               {editMode ? (
-                <input
-                  type="text"
-                  name="phone"
-                  value={profile.phone}
-                  onChange={handleChange}
-                  className="input-field"
-                />
+                <Input id='phone' label='Phone' />
               ) : (
-                <p className="profile-text">{profile.phone}</p>
+                <>
+                  <span className='label'>Phone:</span>
+                  <span className='profile-text'>{profile.phone}</span>
+                </>
               )}
             </div>
 
-            <div className="profile-field">
-              <label>Email:</label>
-              <p className="profile-text">{profile.email}</p>
+            <div className='profile-field'>
+              <span className='label'>Email:</span>
+              <p className='profile-text'>{profile.email}</p>
             </div>
 
-            <div className="profile-field">
-              <label>Password:</label>
-              <div className="password-display">
-                <p className="profile-text">********</p>
+            <div className='profile-field'>
+              <span className='label'>Password:</span>
+              <div className='password-display'>
+                <p className='profile-text'>********</p>
               </div>
             </div>
           </div>
 
-          <button onClick={handleChangePasswordClick} className="edit-password-button">
+          <button
+            onClick={handleChangePasswordClick}
+            className='mt-6 shadow-lg bg-slate-400 w-full py-3 rounded hover:bg-slate-500 active:bg-slate-600 active:shadow-none'
+          >
             Edit Password
           </button>
           {editMode ? (
-            <button onClick={handleSaveProfile} className="save-button">
+            <button onClick={handleSaveProfile} className='mt-3 shadow-lg bg-slate-400 w-full py-3 rounded hover:bg-slate-500 active:bg-slate-600 active:shadow-none'>
               Save Changes
             </button>
           ) : (
-            <button onClick={handleEditClick} className="edit-button">
+            <button onClick={handleEditClick} className='mt-3 shadow-lg bg-slate-400 w-full py-3 rounded hover:bg-slate-500 active:bg-slate-600 active:shadow-none'>
               Edit Profile
             </button>
           )}
@@ -159,44 +159,22 @@ const Profile = () => {
       )}
 
       {isChangingPassword && (
-        <div className="change-password-form">
-          <div className="profile-field">
-            <label>Old Password:</label>
-            <input
-              type="password"
-              name="oldPassword"
-              value={passwordData.oldPassword}
-              onChange={handlePasswordChange}
-              className="input-field"
-            />
-          </div>
+        <div className='change-password-form'>
+          <Input id='oldPassword' label='Old Password' type='password' />
+          <Input id='newPassword' label='New Password' type='password' />
+          <Input
+            id='confirmPassword'
+            label='Confirm Password'
+            type='password'
+          />
 
-          <div className="profile-field">
-            <label>New Password:</label>
-            <input
-              type="password"
-              name="newPassword"
-              value={passwordData.newPassword}
-              onChange={handlePasswordChange}
-              className="input-field"
-            />
-          </div>
-
-          <div className="profile-field">
-            <label>Confirm Password:</label>
-            <input
-              type="password"
-              name="confirmPassword"
-              value={passwordData.confirmPassword}
-              onChange={handlePasswordChange}
-              className="input-field"
-            />
-          </div>
-
-          <button onClick={handleSavePassword} className="save-button">
+          <button onClick={handleSavePassword} className='mt-6 shadow-lg bg-slate-400 w-full py-3 rounded hover:bg-slate-500 active:bg-slate-600 active:shadow-none'>
             Save Password
           </button>
-          <button onClick={handleCancelPasswordChange} className="cancel-button">
+          <button
+            onClick={handleCancelPasswordChange}
+            className='w-full py-3 bg-red-600 rounded shadow-lg hover:bg-red-700 active:bg-red-800 active:shadow-none'
+          >
             Cancel
           </button>
         </div>
