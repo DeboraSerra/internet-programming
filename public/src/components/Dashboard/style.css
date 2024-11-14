@@ -1,0 +1,91 @@
+
+.dashboard {
+    padding: 10px;
+    font-family: Arial, sans-serif;
+    max-width: 400px;
+    margin: 0 auto;
+    border-radius: 8px;
+  }
+  
+ 
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .add-button, .menu-icon {
+    background-color: #333;
+    color: #FFF;
+    border: none;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+ 
+  .task {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  
+  .task-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .task-checkbox {
+    margin-right: 10px;
+  }
+  
+  .task-name {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .task-priority {
+    font-size: 16px;
+    margin-left: auto;
+  }
+  
+
+  .priority-1 {
+    color: red;
+  }
+  .priority-2 {
+    color: orange;
+  }
+  .priority-3 {
+    color: green;
+  }
+  .priority-4 {
+    color: blue;
+  }
+  .priority-5 {
+    color: purple;
+  }
+  
+
+  .task-details {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #666;
+  }
+  
+  .task-date {
+    display: block;
+    margin-top: 5px;
+  }
+  
+  .task-desc {
+    display: block;
+    margin-top: 2px;
+  }
+  
