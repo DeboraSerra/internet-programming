@@ -1,6 +1,6 @@
 "use client";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FaChevronDown,
   FaChevronLeft,
@@ -15,6 +15,21 @@ function Header() {
   const location = usePathname();
   const { id } = useParams();
   const router = useRouter();
+
+  useEffect(() => {
+    auth.onLoadUser().then((user) => {
+      console.log({user})
+      if (user.id) {
+        if (!location.includes(user.id)) {
+          router.push(`/${user.id}/dashboard`);
+        }
+        localStorage.setItem("userData", JSON.stringify(user));
+      } else {
+        localStorage.removeItem("userData");
+        router.push("/");
+      }
+    });
+  }, []);
 
   async function logOut() {
     const url = await auth.logOut();
@@ -44,7 +59,10 @@ function Header() {
   return (
     <header className='flex py-3 px-8 justify-between'>
       {location.includes("dashboard") ? (
-        <button onClick={newTask} className='flex items-center gap-2 text-lg hover:underline'>
+        <button
+          onClick={newTask}
+          className='flex items-center gap-2 text-lg hover:underline'
+        >
           <FaRegPlusSquare size={24} />
           New task
         </button>

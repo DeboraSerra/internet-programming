@@ -1,9 +1,23 @@
+"use client";
+import { useRouter } from "next/navigation.js";
+import { useEffect } from "react";
 import * as auth from "../../../assets/script/auth.js";
 import Button from "../Button";
 import Input from "../Input";
 
 function Login() {
-  auth.onLoadUser();
+  const router = useRouter();
+  useEffect(() => {
+    auth.onLoadUser().then((user) => {
+      if (user.id) {
+        router.push(`/${user.id}/dashboard`);
+        localStorage.setItem("userData", JSON.stringify(user));
+      } else {
+        localStorage.removeItem("userData");
+        router.push("/");
+      }
+    });
+  }, []);
 
   return (
     <form action='' className='flex flex-col w-[250px] items-center gap-10'>
