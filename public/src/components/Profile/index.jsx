@@ -1,21 +1,22 @@
 "use client";
 
 import constants from "@/script/constants";
-import { useState } from "react";
-import Input from "../ControlledInput"
+import { useState, useEffect } from "react";
+import Input from "../Input";
 import "./profile.css";
 
-const getUserUrl = constants.USER_URL + `?email=jfsnow00@gmail.com`; // method: GET
-const updateUserUrl = constants.USER_URL + `?id=673544e9acc052f5aa69184d`; // method: PUT
+const getUserUrl = constants.USER_URL + `?email=jfsnow00@gmail.com`; 
+const updateUserUrl = constants.USER_URL + `?id=673544e9acc052f5aa69184d`; 
 
 const Profile = () => {
   const [profile, setProfile] = useState({
-    name: "Anna Avetisyan",
-    birthday: "2000-01-01",
-    phone: "818 123 4567",
-    email: "info@techtide.co",
-    password: "123456",
-    photo: "https://cdnstorage.sendbig.com/unreal/female.webp",
+    name: "",
+    birthday: "",
+    phone: "",
+    instagram: "",
+    email: "",
+    password: "",
+    profilePicture: "",
   });
 
   const [editMode, setEditMode] = useState(false);
@@ -27,22 +28,21 @@ const Profile = () => {
   });
 
   useEffect(() => {
-    // Função para buscar os dados do usuário
     const fetchUserData = async () => {
       try {
-        const response = await fetch(getUserUrl); // Chama o backend
+        const response = await fetch(getUserUrl);
         if (!response.ok) {
-          throw new Error("Erro ao buscar dados do perfil");
+          throw new Error("Error fetching profile data");
         }
         const data = await response.json();
-        setProfile(data.user); // Atualiza o estado com os dados do perfil
+        setProfile(data.user);
       } catch (error) {
-        console.error("Erro ao buscar dados do perfil:", error);
+        console.error("Error fetching profile data:", error);
       }
     };
 
     fetchUserData();
-  }, []); // Executa uma vez ao carregar o componente
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -61,46 +61,44 @@ const Profile = () => {
   };
 
   const handleSaveProfile = async () => {
-    // Lógica para salvar as alterações do perfil
     const response = await fetch(updateUserUrl, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(profile), // Envia os dados atualizados do perfil
+      body: JSON.stringify(profile),
     });
 
     if (response.ok) {
-      alert("Perfil atualizado com sucesso!");
+      alert("Profile updated successfully!");
       setEditMode(false);
     } else {
-      alert("Erro ao atualizar perfil!");
+      alert("Error updating profile!");
     }
   };
 
   const handleSavePassword = () => {
-    // Validação de senha
     if (
       !passwordData.oldPassword ||
       !passwordData.newPassword ||
       !passwordData.confirmPassword
     ) {
-      alert("Por favor, preencha todos os campos de senha!");
+      alert("Please fill in all password fields!");
       return;
     }
 
     if (passwordData.oldPassword !== profile.password) {
-      alert("A senha antiga está incorreta!");
+      alert("The old password is incorrect!");
       return;
     }
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      alert("A nova senha e a confirmação não coincidem!");
+      alert("The new password and confirmation do not match!");
       return;
     }
 
     if (passwordData.newPassword.length < 8) {
-      alert("A nova senha deve ter pelo menos 8 caracteres!");
+      alert("The new password must be at least 8 characters long!");
       return;
     }
     setProfile((prevProfile) => ({
@@ -108,13 +106,14 @@ const Profile = () => {
       password: passwordData.newPassword,
     }));
 
-    // Limpa os dados da senha
     setIsChangingPassword(false);
     setPasswordData({ oldPassword: "", newPassword: "", confirmPassword: "" });
-    alert("Senha alterada com sucesso!");
+    alert("Password changed successfully!");
   };
 
   const handleEditClick = () => setEditMode(true);
+
+  const handleCancelEdit = () => setEditMode(false);
 
   const handleChangePasswordClick = () => {
     setIsChangingPassword(true);
@@ -129,7 +128,11 @@ const Profile = () => {
   return (
     <div className='profile-container'>
       <div className='profile-header'>
-        <img src={profile.photo} alt='Profile' className='profile-picture' />
+        <img
+          src={profile.profilePicture || 'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg'}
+          alt='Profile'
+          className='profile-picture'
+        />
         <h2>{profile.name}</h2>
       </div>
 
@@ -143,6 +146,7 @@ const Profile = () => {
                   label='User Name'
                   value={profile.name}
                   onChange={handleChange}
+                  name='name'
                 />
               ) : (
                 <>
@@ -159,6 +163,7 @@ const Profile = () => {
                   label='Phone'
                   value={profile.phone}
                   onChange={handleChange}
+                  name='phone'
                 />
               ) : (
                 <>
@@ -181,19 +186,30 @@ const Profile = () => {
             </div>
           </div>
 
-          <button
-            onClick={handleChangePasswordClick}
-            className='mt-6 shadow-lg bg-slate-400 w-full py-3 rounded hover:bg-slate-500 active:bg-slate-600 active:shadow-none'
-          >
-            Edit Password
-          </button>
-          {editMode ? (
+          {!editMode && !isChangingPassword && (
             <button
-              onClick={handleSaveProfile}
-              className='mt-3 shadow-lg bg-slate-400 w-full py-3 rounded hover:bg-slate-500 active:bg-slate-600 active:shadow-none'
+              onClick={handleChangePasswordClick}
+              className='mt-6 shadow-lg bg-slate-400 w-full py-3 rounded hover:bg-slate-500 active:bg-slate-600 active:shadow-none'
             >
-              Save Changes
+              Edit Password
             </button>
+          )}
+
+          {editMode ? (
+            <>
+              <button
+                onClick={handleSaveProfile}
+                className='mt-3 shadow-lg bg-slate-400 w-full py-3 rounded hover:bg-slate-500 active:bg-slate-600 active:shadow-none'
+              >
+                Save Changes
+              </button>
+              <button
+                onClick={handleCancelEdit}
+                className='mt-3 shadow-lg bg-red-600 w-full py-3 rounded hover:bg-red-700 active:bg-red-800 active:shadow-none'
+              >
+                Cancel Edit
+              </button>
+            </>
           ) : (
             <button
               onClick={handleEditClick}
@@ -213,6 +229,7 @@ const Profile = () => {
             type='password'
             value={passwordData.oldPassword}
             onChange={handlePasswordChange}
+            name='oldPassword'
           />
           <Input
             id='newPassword'
@@ -220,6 +237,7 @@ const Profile = () => {
             type='password'
             value={passwordData.newPassword}
             onChange={handlePasswordChange}
+            name='newPassword'
           />
           <Input
             id='confirmPassword'
@@ -227,6 +245,7 @@ const Profile = () => {
             type='password'
             value={passwordData.confirmPassword}
             onChange={handlePasswordChange}
+            name='confirmPassword'
           />
 
           <button
