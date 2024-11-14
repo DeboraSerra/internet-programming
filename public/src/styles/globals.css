@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-image: url(../../assets/main-bg.avif);
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#filters {
+  background-image: url(../../assets/main-bg.avif);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
