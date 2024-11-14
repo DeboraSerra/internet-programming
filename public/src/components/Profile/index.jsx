@@ -1,8 +1,11 @@
 "use client";
 
+import constants from "@/script/constants";
 import { useState } from "react";
 import Input from "../Input";
 import "./profile.css";
+
+const userUrl = constants.USER_URL + `?email=debora.r.serra@gmail.com`;
 
 const Profile = () => {
   const [profile, setProfile] = useState({
@@ -147,11 +150,17 @@ const Profile = () => {
             Edit Password
           </button>
           {editMode ? (
-            <button onClick={handleSaveProfile} className='mt-3 shadow-lg bg-slate-400 w-full py-3 rounded hover:bg-slate-500 active:bg-slate-600 active:shadow-none'>
+            <button
+              onClick={handleSaveProfile}
+              className='mt-3 shadow-lg bg-slate-400 w-full py-3 rounded hover:bg-slate-500 active:bg-slate-600 active:shadow-none'
+            >
               Save Changes
             </button>
           ) : (
-            <button onClick={handleEditClick} className='mt-3 shadow-lg bg-slate-400 w-full py-3 rounded hover:bg-slate-500 active:bg-slate-600 active:shadow-none'>
+            <button
+              onClick={handleEditClick}
+              className='mt-3 shadow-lg bg-slate-400 w-full py-3 rounded hover:bg-slate-500 active:bg-slate-600 active:shadow-none'
+            >
               Edit Profile
             </button>
           )}
@@ -168,7 +177,10 @@ const Profile = () => {
             type='password'
           />
 
-          <button onClick={handleSavePassword} className='mt-6 shadow-lg bg-slate-400 w-full py-3 rounded hover:bg-slate-500 active:bg-slate-600 active:shadow-none'>
+          <button
+            onClick={handleSavePassword}
+            className='mt-6 shadow-lg bg-slate-400 w-full py-3 rounded hover:bg-slate-500 active:bg-slate-600 active:shadow-none'
+          >
             Save Password
           </button>
           <button
