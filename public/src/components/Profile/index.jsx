@@ -1,3 +1,7 @@
+import constants from "@/script/constants";
+
+const userUrl = constants.USER_URL + `?email=debora.r.serra@gmail.com`;
+
 function Profile() {
   return (
     <div>
