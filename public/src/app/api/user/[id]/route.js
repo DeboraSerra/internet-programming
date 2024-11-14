@@ -1,7 +1,7 @@
 import service from "@/backend/services/users.mjs";
 
 export const PUT = async (req) => {
-  const { email, name } = await req.json();
+  const { email, name, birthday, phone } = await req.json();
   const id = req.nextUrl.pathname.split("/").at(-1);
   if (!email) {
     return new Response(JSON.stringify({ message: "email is required" }), {
@@ -13,7 +13,7 @@ export const PUT = async (req) => {
       status: 400,
     });
   }
-  const user = await service.updateUser({ email, name, id });
+  const user = await service.updateUser({ email, name, id, birthday, phone });
   if (!user) {
     return new Response(JSON.stringify({ message: "something went wrong" }), {
       status: 400,
