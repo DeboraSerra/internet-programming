@@ -9,7 +9,7 @@ const Profile = () => {
     birthday: '2000-01-01',
     phone: '818 123 4567',
     instagram: '@anna_insta',
-    email: 'info@aplusdesign.co',
+    email: 'info@techtide.co',
     password: '********',
     profilePicture: "https://cdnstorage.sendbig.com/unreal/female.webp",
   });
@@ -88,7 +88,7 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* Botões de ação */}
+
       {editMode ? (
         <button onClick={handleSave} className="save-button">
           Save Changes

@@ -1,116 +1,127 @@
-/* Estilos gerais */
+
 .profile-container {
-    max-width: 400px;
-    margin: 20px auto;
+    max-width: 600px;
+    width: 90%;
+    margin: 40px auto;
     padding: 20px;
     border-radius: 15px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    text-align: center;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
     background-color: #e3c695;
     font-family: 'Roboto', sans-serif;
-}
-
-.profile-header {
+    transition: all 0.3s ease;
+  }
+  
+  @media (min-width: 1024px) {
+    .profile-container {
+      max-width: 800px;
+    }
+  }
+  
+  .profile-header {
     background: linear-gradient(45deg, #3d4c65, #9ca3af);
     color: #fff;
-    padding: 30px 20px;
+    padding: 40px 20px;
     border-radius: 15px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    text-align: center;
-    position: relative;
+    gap: 20px;
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
-    /* Sombra para dar profundidade */
-}
+  }
 
-/* Foto de perfil */
-.profile-picture {
+  .profile-picture {
     border-radius: 50%;
-    width: 120px;
-    height: 120px;
+    width: 150px;
+    height: 150px;
     object-fit: cover;
-    border: 3px solid #97763c;
-    /* Borda dourada ao redor da imagem */
-    margin-bottom: 10px;
-    /* Espaço entre a foto e o nome */
+    border: 4px solid #97763c;
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-    /* Sombra para destacar a imagem */
-}
+  }
 
-/* Informações do perfil */
-.profile-info {
-    margin-top: 20px;
+  .profile-name {
+    font-size: 1.8rem;
+    font-weight: bold;
+  }
+  
+  .profile-info {
+    margin-top: 30px;
     text-align: left;
-}
-
-.profile-field {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .profile-field {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 15px 0;
-    border-bottom: 1px solid #e0e0e0;
-    transition: all 0.3s ease;
-}
-
-.profile-text {
-    font-size: 1rem;
-    color: #555;
-}
-
-.profile-field label {
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .profile-text {
+    font-size: 1.1rem;
+    color: #333;
+    margin-top: 5px;
+  }
+  
+  .profile-field label {
     font-weight: 700;
     color: #4f3183;
-    /* Roxo profundo */
     font-size: 1rem;
-    margin-bottom: 5px;
-}
-
-.input-field {
-    padding: 8px;
+  }
+  
+  .input-field {
+    padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 8px;
     width: 100%;
     margin-top: 5px;
-}
-
-.input-field:focus {
+  }
+  
+  .input-field:focus {
     border-color: #3d4c65;
-    /* Azul escuro */
     outline: none;
-}
-
-/* Botões */
-.edit-button,
-.save-button {
+  }
+  
+  .edit-button,
+  .save-button {
     background: #3d4c65;
-    /* Azul escuro */
     color: #fff;
     border: none;
     padding: 14px;
     border-radius: 8px;
     cursor: pointer;
     width: 100%;
-    margin-top: 20px;
+    margin-top: 30px;
     font-size: 1rem;
     transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.edit-button:hover,
-.save-button:hover {
+  }
+  
+  .edit-button:hover,
+  .save-button:hover {
     background: #8e7892;
-    /* Lavanda acinzentada */
     transform: scale(1.05);
-}
-
-.edit-button:active,
-.save-button:active {
+  }
+  
+  .edit-button:active,
+  .save-button:active {
     transform: scale(1);
-}
-
-.edit-button:focus,
-.save-button:focus {
+  }
+  
+  .edit-button:focus,
+  .save-button:focus {
     outline: none;
     box-shadow: 0 0 5px 3px rgba(61, 76, 101, 0.3);
-}
+  }
+  
+  @media (min-width: 768px) {
+    .profile-info {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 40px;
+    }
+    .profile-field {
+      width: 45%;
+    }
+  }
+  
