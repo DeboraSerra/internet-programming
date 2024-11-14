@@ -33,7 +33,11 @@ export const googleLogin = async () => {
     if (response.status >= 400) {
       response = await fetch(`/api/user`, {
         method: "POST",
-        body: JSON.stringify({ email: user.email }),
+        body: JSON.stringify({
+          email: user.email,
+          name: user.displayName,
+          photo: user.photoURL,
+        }),
       });
     }
     if (response.status >= 400) throw new Error("");
