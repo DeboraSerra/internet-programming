@@ -1,22 +1,22 @@
 "use client";
 
 import constants from "@/script/constants";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Input from "../Input";
 import "./profile.css";
 
-const getUserUrl = constants.USER_URL + `?email=jfsnow00@gmail.com`; // method: GET
-const updateUserUrl = constants.USER_URL + `?id=673544e9acc052f5aa69184d` // method: PUT
+const getUserUrl = constants.USER_URL + `?email=jfsnow00@gmail.com`; // método: GET
+const updateUserUrl = constants.USER_URL + `?id=673544e9acc052f5aa69184d`; // método: PUT
 
 const Profile = () => {
   const [profile, setProfile] = useState({
-    username: "Anna Avetisyan",
-    birthday: "2000-01-01",
-    phone: "818 123 4567",
-    instagram: "@anna_insta",
-    email: "info@techtide.co",
-    password: "123456",
-    profilePicture: "https://cdnstorage.sendbig.com/unreal/female.webp",
+    username: "",
+    birthday: "",
+    phone: "",
+    instagram: "",
+    email: "",
+    password: "",
+    profilePicture: "",
   });
 
   const [editMode, setEditMode] = useState(false);
@@ -26,6 +26,24 @@ const Profile = () => {
     newPassword: "",
     confirmPassword: "",
   });
+
+  useEffect(() => {
+    // Função para buscar os dados do usuário
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(getUserUrl); // Chama o backend
+        if (!response.ok) {
+          throw new Error("Erro ao buscar dados do perfil");
+        }
+        const data = await response.json();
+        setProfile(data.user); // Atualiza o estado com os dados do perfil
+      } catch (error) {
+        console.error("Erro ao buscar dados do perfil:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []); // Executa uma vez ao carregar o componente
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,8 +61,22 @@ const Profile = () => {
     }));
   };
 
-  const handleSaveProfile = () => {
-    setEditMode(false);
+  const handleSaveProfile = async () => {
+    // Lógica para salvar as alterações do perfil
+    const response = await fetch(updateUserUrl, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(profile), // Envia os dados atualizados do perfil
+    });
+
+    if (response.ok) {
+      alert("Perfil atualizado com sucesso!");
+      setEditMode(false);
+    } else {
+      alert("Erro ao atualizar perfil!");
+    }
   };
 
   const handleSavePassword = () => {
@@ -54,22 +86,22 @@ const Profile = () => {
       !passwordData.newPassword ||
       !passwordData.confirmPassword
     ) {
-      alert("Please fill in all password fields!");
+      alert("Por favor, preencha todos os campos de senha!");
       return;
     }
 
     if (passwordData.oldPassword !== profile.password) {
-      alert("Old password is incorrect!");
+      alert("A senha antiga está incorreta!");
       return;
     }
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      alert("New password and confirmation do not match!");
+      alert("A nova senha e a confirmação não coincidem!");
       return;
     }
 
     if (passwordData.newPassword.length < 8) {
-      alert("New password must be at least 8 characters long!");
+      alert("A nova senha deve ter pelo menos 8 caracteres!");
       return;
     }
     setProfile((prevProfile) => ({
@@ -80,7 +112,7 @@ const Profile = () => {
     // Limpa os dados da senha
     setIsChangingPassword(false);
     setPasswordData({ oldPassword: "", newPassword: "", confirmPassword: "" });
-    alert("Password changed successfully!");
+    alert("Senha alterada com sucesso!");
   };
 
   const handleEditClick = () => setEditMode(true);
@@ -99,11 +131,11 @@ const Profile = () => {
     <div className='profile-container'>
       <div className='profile-header'>
         <img
-          src={profile.profilePicture}
+          src={profile.profilePicture || 'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg'}
           alt='Profile'
           className='profile-picture'
         />
-        <h2>{profile.username}</h2>
+        <h2>{profile.name}</h2>
       </div>
 
       {!isChangingPassword && (
@@ -111,18 +143,30 @@ const Profile = () => {
           <div className='profile-info'>
             <div className='profile-field'>
               {editMode ? (
-                <Input id='username' label='User Name' />
+                <Input
+                  id='username'
+                  label='User Name'
+                  value={profile.name}
+                  onChange={handleChange}
+                  name='username'
+                />
               ) : (
                 <>
                   <span className='label'>User Name:</span>
-                  <span className='profile-text'>{profile.username}</span>
+                  <span className='profile-text'>{profile.name}</span>
                 </>
               )}
             </div>
 
             <div className='profile-field'>
               {editMode ? (
-                <Input id='phone' label='Phone' />
+                <Input
+                  id='phone'
+                  label='Phone'
+                  value={profile.phone}
+                  onChange={handleChange}
+                  name='phone'
+                />
               ) : (
                 <>
                   <span className='label'>Phone:</span>
@@ -170,12 +214,29 @@ const Profile = () => {
 
       {isChangingPassword && (
         <div className='change-password-form'>
-          <Input id='oldPassword' label='Old Password' type='password' />
-          <Input id='newPassword' label='New Password' type='password' />
+          <Input
+            id='oldPassword'
+            label='Old Password'
+            type='password'
+            value={passwordData.oldPassword}
+            onChange={handlePasswordChange}
+            name='oldPassword'
+          />
+          <Input
+            id='newPassword'
+            label='New Password'
+            type='password'
+            value={passwordData.newPassword}
+            onChange={handlePasswordChange}
+            name='newPassword'
+          />
           <Input
             id='confirmPassword'
             label='Confirm Password'
             type='password'
+            value={passwordData.confirmPassword}
+            onChange={handlePasswordChange}
+            name='confirmPassword'
           />
 
           <button
