@@ -130,21 +130,6 @@ function Dashboard() {
       <div>
         {parsedTasks.map((it) => (
           <>
-<<<<<<< HEAD
-          <h2 className="date-header font-bold text-lg py-3 border-b border-slate-400">{new Date(it.date).toLocaleDateString()}</h2>
-          {it.tasks.map(task => (<div key={task.id} className="task">
-            <div className="task-header flex items-center gap-3 py-2 px-3 border-b border-slate-400">
-              <input type="checkbox" checked={task.completed} readOnly className="task-checkbox" />
-              <span className="task-name">{task.name}</span>
-              <span className={`task-priority priority-${task.priority}`}>
-                <FaStar />
-              </span>
-            </div>
-            <div className="task-details border-b border-slate-400">
-              <span className="task-desc">{task.description}</span>
-            </div>
-          </div>))}
-=======
             <h2 className='task-header border-b border-slate-400'>
               {new Date(it.date).toLocaleDateString()}
             </h2>
@@ -167,7 +152,6 @@ function Dashboard() {
                 </div>
               </div>
             ))}
->>>>>>> 3920bedbc0476d8debb2853c6ad96e22b1f7ff2a
           </>
         ))}
       </div>
