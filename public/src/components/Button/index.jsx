@@ -12,7 +12,9 @@ function Button({
   const router = useRouter();
 
   function validateEmail(email) {
-    //add email validation
+    if(/\s/g.test (password)){
+      return false;
+    }
     return true;
   }
 
