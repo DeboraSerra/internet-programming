@@ -17,13 +17,13 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: '20'
 
       - name: Install dependencies
         run: cd public && npm install
   
       - name: Build project
-        run: npm run build
+        run: cd public && npm run build
       
       - name: Deploy to firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
