@@ -12,11 +12,13 @@ function Button({
   const router = useRouter();
 
   function validateEmail(email) {
-    if(/\s/g.test (password)){
-      return false;
-    }
-    return true;
+
+    const charactersAllowed = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    console.log("Email Validation", charactersAllowed.test(email))
+    return charactersAllowed.test(email);
+
   }
+    
 
   function validatePassword(password) {
     /**
