@@ -18,6 +18,7 @@ model User {
   email String  @unique
   name  String?
   photo String?
+  birthday DateTime?
   tasks Task[]
 
   @@map("users")

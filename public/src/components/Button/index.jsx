@@ -12,7 +12,7 @@ function Button({
   const router = useRouter();
 
   function validateEmail(email) {
-    //add email validation
+    //
     return true;
   }
 
@@ -98,5 +98,6 @@ function Button({
     </button>
   );
 }
+
 
 export default Button;

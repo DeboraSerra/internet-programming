@@ -10,16 +10,35 @@ import { auth } from "./firebase";
 
 export const onLoadUser = async () => {
   const auth = getAuth();
-  const user = auth.currentUser;
+  const test = auth.currentUser;
+  const storageUser = localStorage.getItem("userData");
   try {
-    if (user) {
+    if (storageUser) {
+      const user = JSON.parse(storageUser);
       const response = await fetch(`/api/user?email=${user.email}`);
       const data = await response.json();
-      return data.user ? `/${data.user.id}/dashboard` : "/";
+      return data.user;
     }
+    return {};
   } catch (e) {
     console.log(e);
+    return {};
   }
+};
+
+const createUser = async (user) => {
+  const response = await fetch(`/api/user`, {
+    method: "POST",
+    body: JSON.stringify({
+      email: user.email,
+      name: user.displayName,
+      photo: user.photoURL,
+    }),
+  });
+  if (response.status >= 400) throw new Error("");
+  const foundUser = await response.json();
+  localStorage.setItem("userData", JSON.stringify(foundUser.user));
+  return foundUser;
 };
 
 export const googleLogin = async () => {
@@ -30,18 +49,13 @@ export const googleLogin = async () => {
     let user = data.user;
 
     let response = await fetch(`/api/user?email=${user.email}`);
+    let foundUser;
     if (response.status >= 400) {
-      response = await fetch(`/api/user`, {
-        method: "POST",
-        body: JSON.stringify({
-          email: user.email,
-          name: user.displayName,
-          photo: user.photoURL,
-        }),
-      });
+      foundUser = await createUser(user);
+    } else {
+      foundUser = await response.json();
     }
-    if (response.status >= 400) throw new Error("");
-    const foundUser = await response.json();
+    localStorage.setItem("userData", JSON.stringify(foundUser.user));
     return `/${foundUser.user.id}/dashboard`;
   } catch (error) {
     console.error(error);
@@ -58,6 +72,7 @@ export const passwordLogin = async ({ email, password }) => {
     const foundUser = await response.json();
     if (!foundUser)
       throw new Error("Email not registered or credentials invalid");
+    localStorage.setItem("userData", JSON.stringify(foundUser.user));
     return `/${foundUser.user.id}/dashboard`;
   } catch (e) {
     console.log(e);
@@ -72,15 +87,9 @@ export const createAccount = async ({ email, password }) => {
       password
     );
     let user = data.user;
-    const response = await fetch("/api/user", {
-      method: "POST",
-      body: JSON.stringify({
-        email: user.email,
-      }),
-    });
-    const foundUser = await response.json();
-    if (!foundUser) throw new Error("");
-    return `/${foundUser.user.id}/dashboard`;
+    const response = await createUser(user);
+    if (!response) throw new Error("");
+    return `/${response.user.id}/dashboard`;
   } catch (e) {
     console.log(e);
     const user = auth.currentUser;
@@ -91,6 +100,7 @@ export const createAccount = async ({ email, password }) => {
 export const logOut = async () => {
   try {
     await signOut(getAuth());
+    localStorage.removeItem("userData");
     return "/";
   } catch (e) {
     console.log(e);
