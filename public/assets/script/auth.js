@@ -41,7 +41,14 @@ const createUser = async (user) => {
       birthday,
     }),
   });
-  if (response.status >= 400) throw new Error("");
+  if (response.status >= 400) {
+    const result = await response?.json();
+    if (result.error) {
+      result.error.forEach((it) => {
+        toastEmitter.emit(TOAST_EMITTER_KEY, it.message);
+      });
+    }
+  }
   const foundUser = await response.json();
   localStorage.setItem("userData", JSON.stringify(foundUser.user));
   return foundUser;
@@ -90,7 +97,9 @@ export const passwordLogin = async ({ email, password }) => {
     return `/${foundUser.user.id}/dashboard`;
   } catch (e) {
     console.log(e);
-    toastEmitter.emit(TOAST_EMITTER_KEY, "Something went wrong");
+    if (e.message.includes("(auth/invalid-credential)")) {
+      toastEmitter.emit(TOAST_EMITTER_KEY, "Email or password is wrong");
+    } else toastEmitter.emit(TOAST_EMITTER_KEY, "Something went wrong");
   }
 };
 
@@ -108,9 +117,13 @@ export const createAccount = async ({ email, password }) => {
     return `/${response.user.id}/dashboard`;
   } catch (e) {
     console.log(e);
-    toastEmitter.emit(TOAST_EMITTER_KEY, "Something went wrong");
-    const user = auth.currentUser;
-    user.delete();
+    if (e.message.includes("(auth/email-already-in-use)")) {
+      toastEmitter.emit(TOAST_EMITTER_KEY, "Email already in use");
+    } else {
+      toastEmitter.emit(TOAST_EMITTER_KEY, "Something went wrong");
+      const user = auth.currentUser;
+      user.delete();
+    }
   }
 };
 
