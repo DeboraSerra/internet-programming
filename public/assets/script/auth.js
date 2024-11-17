@@ -27,12 +27,15 @@ export const onLoadUser = async () => {
 };
 
 const createUser = async (user) => {
+  const { email, displayName, photoURL, phone = "", birthday = "" } = user;
   const response = await fetch(`/api/user`, {
     method: "POST",
     body: JSON.stringify({
-      email: user.email,
-      name: user.displayName,
-      photo: user.photoURL,
+      email: email,
+      name: displayName ?? "",
+      photo: photoURL ?? "",
+      phone,
+      birthday,
     }),
   });
   if (response.status >= 400) throw new Error("");

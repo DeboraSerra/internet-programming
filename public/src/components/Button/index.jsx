@@ -1,15 +1,18 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { FaSpinner } from "react-icons/fa";
 import * as auth from "../../../assets/script/auth";
 
 function Button({
-  className = "shadow-lg bg-slate-400 w-full py-3 rounded hover:bg-slate-500 active:bg-slate-600 active:shadow-none",
+  className = "flex items-center justify-center shadow-lg bg-slate-400 w-full py-3 rounded hover:bg-slate-500 active:bg-slate-600 active:shadow-none",
   action,
   type = "button",
   text = "Log in",
 }) {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   function validateEmail(email) {
     //add email validation
@@ -51,6 +54,8 @@ function Button({
   const redirect = (url) => {
     if (url) {
       router.push(url);
+    } else {
+      setIsLoading(false);
     }
   };
 
@@ -90,11 +95,12 @@ function Button({
       className={className}
       type={type}
       onClick={(e) => {
+        setIsLoading(true);
         type === "submit" && e.preventDefault();
         actions[action]();
       }}
     >
-      {text}
+      {isLoading ? <FaSpinner className='animate-spin' /> : text}
     </button>
   );
 }

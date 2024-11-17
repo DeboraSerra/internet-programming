@@ -18,7 +18,6 @@ function Header() {
 
   useEffect(() => {
     auth.onLoadUser().then((user) => {
-      console.log({user})
       if (user.id) {
         if (!location.includes(user.id)) {
           router.push(`/${user.id}/dashboard`);

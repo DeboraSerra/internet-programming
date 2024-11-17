@@ -7,31 +7,33 @@ import {
 import model from "../models/users.mjs";
 
 async function createUser(userObj) {
-  const user = createUserSchema.safeParse(userObj);
-  if (!user.success) throw new Error(user.error);
+  const user = createUserSchema(userObj);
+  if (!user.success) {
+    return user
+  }
   const created = await model.createUser(user.data);
   return created;
 }
 
 async function getUser(obj) {
-  const { data: email, success, error } = emailSchema.safeParse(obj.email);
-  if (!success) return false;
-  const user = await model.getUser({ email });
+  const email = emailSchema(obj.email);
+  if (!email.success) return false;
+  const user = await model.getUser(email.data);
   return user;
 }
 
 async function updateUser(userObj) {
-  const user = updateUserSchema.safeParse(userObj);
-  if (!user.success) throw new Error(user.error);
+  const user = updateUserSchema(userObj);
+  if (!user.success) return user
   const created = await model.updateUser(user.data);
   return created;
 }
 
 async function deleteUser(obj) {
-  const { data: id, success, error } = idSchema.safeParse(obj.id);
-  if (!success) throw new Error(error);
-  const user = await model.deleteUser({ id });
-  return user;
+  const user = idSchema(obj.id);
+  if (!user.success) return user
+  const userDeleted = await model.deleteUser({ id });
+  return userDeleted;
 }
 
 const service = { createUser, deleteUser, getUser, updateUser };

@@ -19,6 +19,11 @@ export const PUT = async (req) => {
       status: 400,
     });
   }
+  if (user.error) {
+    return new Response(JSON.stringify({ message: user.error }), {
+      status: 400,
+    });
+  }
   return new Response(JSON.stringify({ user }), { status: 200 });
 };
 
