@@ -9,6 +9,7 @@ import {
 } from "react-icons/fa";
 import * as auth from "../../../assets/script/auth";
 import FilterMenu from "./FilterMenu";
+import toastEmitter, { TOAST_EMITTER_KEY } from "../Toast/toastEmitter";
 
 function Header() {
   const [renderFilters, setRenderFilters] = useState(false);
@@ -22,8 +23,7 @@ function Header() {
         if (!location.includes(user.id)) {
           router.push(`/${user.id}/dashboard`);
         }
-        localStorage.setItem("userData", JSON.stringify(user));
-      } else {
+        localStorage.setItem("userData", JSON.stringify(user));      } else {
         localStorage.removeItem("userData");
         router.push("/");
       }
@@ -33,6 +33,7 @@ function Header() {
   async function logOut() {
     const url = await auth.logOut();
     url && router.push(url);
+    toastEmitter.emit(TOAST_EMITTER_KEY, "Logout successful");
   }
 
   async function newTask() {
