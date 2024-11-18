@@ -16,14 +16,9 @@ function Button({
   const [isLoading, setIsLoading] = useState(false);
 
   function validateEmail(email) {
-<<<<<<< HEAD
-    //
-    return true;
-=======
     const charactersAllowed = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     console.log("Email Validation", charactersAllowed.test(email));
     return charactersAllowed.test(email);
->>>>>>> 0551bb728f678248a08357f7ff7483d7f0164535
   }
 
   function validatePassword(password) {

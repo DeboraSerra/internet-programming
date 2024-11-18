@@ -56,20 +56,14 @@
   }
   
 
-  .priority-1 {
-    color: red;
+  .urgent {
+    color: #B91c1c;
   }
-  .priority-2 {
-    color: orange;
+  .important {
+    color: #fbbf24;
   }
-  .priority-3 {
-    color: green;
-  }
-  .priority-4 {
-    color: blue;
-  }
-  .priority-5 {
-    color: purple;
+  .circumstantial {
+    color: #84cc16;
   }
   
 

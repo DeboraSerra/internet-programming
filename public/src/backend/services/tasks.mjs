@@ -15,7 +15,7 @@ async function createTask(taskObj) {
 async function getTasks({ userId }) {
   const parsedTask = idSchema(userId);
   if (!parsedTask.success) return parsedTask;
-  const tasks = await model.getTasks(parsedTask.data);
+  const tasks = await model.getTasks({userId:parsedTask.data.id});
   return tasks;
 }
 
@@ -25,8 +25,8 @@ async function getTaskById({ userId, id }) {
   const taskId = idSchema(id);
   if (!taskId.success) return taskId;
   const task = await model.getTaskById({
-    userId: userIdParsed.data,
-    id: taskId.data,
+    userId: userIdParsed.data.id,
+    id: taskId.data.id,
   });
   return task;
 }
@@ -44,8 +44,8 @@ async function completeTask({ userId, id }) {
   const taskId = idSchema(id);
   if (!taskId.success) return taskId;
   const updated = await model.completeTask({
-    id: taskId.data,
-    userId: userIdParsed.data,
+    id: taskId.data.id,
+    userId: userIdParsed.data.id,
   });
   return updated;
 }
@@ -56,8 +56,8 @@ async function deleteTask({ id, userId }) {
   const taskId = idSchema(id);
   if (!taskId.success) return taskId;
   const task = await model.deleteTask({
-    userId: userIdParsed.data,
-    id: taskId.data,
+    userId: userIdParsed.data.id,
+    id: taskId.data.id,
   });
   return task;
 }

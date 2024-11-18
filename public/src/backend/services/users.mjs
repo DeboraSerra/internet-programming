@@ -32,7 +32,7 @@ async function updateUser(userObj) {
 async function deleteUser(obj) {
   const user = idSchema(obj.id);
   if (!user.success) return user
-  const userDeleted = await model.deleteUser({ id });
+  const userDeleted = await model.deleteUser(user.data);
   return userDeleted;
 }
 
