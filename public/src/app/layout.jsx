@@ -1,3 +1,4 @@
+import Toast from "@/components/Toast/Toast.jsx";
 import * as initialize from "../../assets/script/firebase.js";
 import "../styles/globals.css";
 
@@ -13,6 +14,7 @@ export default function RootLayout({ children }) {
         <script src={JSON.parse(JSON.stringify(initialize))}></script>
       </head>
       <body>
+        <Toast />
         <div className='container mx-auto'>{children}</div>
       </body>
     </html>
