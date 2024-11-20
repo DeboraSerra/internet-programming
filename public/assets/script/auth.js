@@ -5,6 +5,7 @@ import {
   createUserWithEmailAndPassword,
   getAuth,
   GoogleAuthProvider,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -104,15 +105,15 @@ export const passwordLogin = async ({ email, password }) => {
   }
 };
 
-export const createAccount = async ({ email, password }) => {
+export const createAccount = async (userData) => {
+  const { email, password } = data
   try {
-    const data = await createUserWithEmailAndPassword(
+    await createUserWithEmailAndPassword(
       getAuth(),
       email,
       password
     );
-    let user = data.user;
-    const response = await createUser(user);
+    const response = await createUser(userData);
     if (!response) throw new Error("");
     toastEmitter.emit(TOAST_EMITTER_KEY, "Login successful");
     return `/${response.user.id}/dashboard`;
@@ -154,3 +155,8 @@ export const updateUserPassword = async (newPassword) => {
     return false;
   }
 };
+
+export const resetPassword = async (email) => {
+  const auth = getAuth();
+  await sendPasswordResetEmail(auth, email);
+}
