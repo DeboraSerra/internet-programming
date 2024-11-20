@@ -8,6 +8,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updatePassword,
 } from "firebase/auth";
 import { auth } from "./firebase";
 
@@ -134,5 +135,22 @@ export const logOut = async () => {
     return "/";
   } catch (e) {
     console.log(e);
+  }
+};
+
+export const updateUserPassword = async (newPassword) => {
+  const auth = getAuth();
+
+  const user = auth.currentUser;
+
+  try {
+    await updatePassword(user, newPassword);
+    return true;
+  } catch (error) {
+    toastEmitter.emit(
+      TOAST_EMITTER_KEY,
+      `Error updating password: ${error.message}`
+    );
+    return false;
   }
 };
