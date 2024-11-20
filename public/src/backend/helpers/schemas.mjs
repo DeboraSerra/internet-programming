@@ -23,7 +23,7 @@ const emailSchema = (email = "") => {
 };
 
 const idSchema = (id = "") => {
-  if (!id.trim() || id.trim().length !== 24) {
+  if (!id?.trim() || id?.trim().length !== 24) {
     return {
       success: false,
       error: { field: "id", message: "Id format is invalid" },
@@ -44,12 +44,12 @@ const createUserSchema = (user) => {
     validations.push({ field: "email", message: "E-mail is required" });
   if (email && !EMAIL_REGEX.test(email))
     validations.push({ field: "email", message: "E-mail format is invalid" });
-  if (name.trim() && name.trim().length < 4)
+  if (name?.trim() && name?.trim().length < 4)
     validations.push({
       field: "name",
       message: "Name must be at least 4 characters long",
     });
-  if (photo.trim()) {
+  if (photo?.trim()) {
     try {
       new URL(photo);
     } catch {
@@ -59,13 +59,13 @@ const createUserSchema = (user) => {
       });
     }
   }
-  if (birthday.trim() && isNaN(Date.parse(birthday))) {
+  if (birthday?.trim() && isNaN(Date.parse(birthday))) {
     validations.push({
       field: "birthday",
       message: "Birthday must be a valid date",
     });
   }
-  if (phone.trim() && !PHONE_REGEX.test(phone.trim())) {
+  if (phone?.trim() && !PHONE_REGEX.test(phone.trim())) {
     validations.push({
       field: "phone",
       message: "Phone must be the format '000-000-0000'",
@@ -98,12 +98,17 @@ const updateUserSchema = (user) => {
 const createTaskSchema = (task) => {
   const { name, description, date, priority = 1, userId } = task;
   const validations = [];
-  if (name.trim().length < 4)
+  if (!name)
+    validations.push({
+      field: "name",
+      message: "Name is required",
+    });
+  if (name?.trim().length < 4)
     validations.push({
       field: "name",
       message: "Name must be at least 4 characters long",
     });
-  if (description.trim() && description.length < 4) {
+  if (description?.trim() && description.length < 4) {
     validations.push({
       field: "description",
       message: "Description must be at least 4 characters long",
@@ -127,9 +132,9 @@ const createTaskSchema = (task) => {
     });
   }
   if (
-    !userId.trim() ||
+    !userId?.trim() ||
     typeof userId !== "string" ||
-    userId.trim().length !== 24
+    userId?.trim().length !== 24
   ) {
     validations.push({
       field: "userId",
@@ -139,7 +144,14 @@ const createTaskSchema = (task) => {
   return {
     success: validations.length !== 0,
     error: validations,
-    data: validations.length === 0 ? null : task,
+    data:
+      validations.length === 0
+        ? null
+        : Object.entries(task).reduce((acc, [key, value]) => {
+            if (key === "date") return { ...acc, [key]: new Date(value) };
+            if (key === "priority") return { ...acc, [key]: parseInt(value) };
+            return { ...acc, [key]: value };
+          }, {}),
   };
 };
 
@@ -149,7 +161,11 @@ const updateTaskSchema = (task) => {
   return {
     success: fieldsResult.success && idResult.success,
     error: { ...fieldsResult.error, ...idResult.error },
-    data: fieldsResult.success && idResult.success ? user : null,
+    data: fieldsResult.success && idResult.success ? Object.entries(task).reduce((acc, [key, value]) => {
+      if (key === "date") return { ...acc, [key]: new Date(value) };
+      if (key === "priority") return { ...acc, [key]: parseInt(value) };
+      return { ...acc, [key]: value };
+    }, {}) : null,
   };
 };
 

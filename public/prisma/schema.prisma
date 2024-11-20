@@ -18,6 +18,7 @@ model User {
   email String  @unique
   name  String?
   photo String?
+  phone String?
   birthday DateTime?
   tasks Task[]
 
