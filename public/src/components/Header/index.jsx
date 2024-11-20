@@ -8,8 +8,8 @@ import {
   FaRegPlusSquare,
 } from "react-icons/fa";
 import * as auth from "../../../assets/script/auth";
-import FilterMenu from "./FilterMenu";
 import toastEmitter, { TOAST_EMITTER_KEY } from "../Toast/toastEmitter";
+import FilterMenu from "./FilterMenu";
 
 function Header() {
   const [renderFilters, setRenderFilters] = useState(false);
@@ -23,7 +23,8 @@ function Header() {
         if (!location.includes(user.id)) {
           router.push(`/${user.id}/dashboard`);
         }
-        localStorage.setItem("userData", JSON.stringify(user));      } else {
+        localStorage.setItem("userData", JSON.stringify(user));
+      } else {
         localStorage.removeItem("userData");
         router.push("/");
       }
@@ -41,6 +42,7 @@ function Header() {
   }
 
   async function back() {
+    localStorage.removeItem("editTask");
     router.push(`/${id}/dashboard`);
   }
 
