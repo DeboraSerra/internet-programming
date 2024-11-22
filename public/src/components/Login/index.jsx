@@ -2,8 +2,8 @@
 import { useRouter } from "next/navigation.js";
 import { useEffect } from "react";
 import * as auth from "../../../assets/script/auth.js";
-import Button from "../Button";
 import Input from "../Input";
+import Button from "../LoginButton/index.jsx";
 
 function Login() {
   const router = useRouter();
