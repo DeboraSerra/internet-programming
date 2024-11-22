@@ -13,6 +13,9 @@ const FilterMenu = () => {
       <li className='text-nowrap py-1 px-2 border-b border-slate-400 cursor-pointer hover:bg-amber-300 hover:bg-opacity-40'>
         By completion
       </li>
+      <li className='text-nowrap py-1 px-2 border-b border-slate-400 cursor-pointer hover:bg-amber-300 hover:bg-opacity-40'>
+        See past tasks
+      </li>
     </ul>
   );
 };

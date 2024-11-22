@@ -17,6 +17,11 @@ export const PUT = async (req) => {
       status: 400,
     });
   }
+  if (task.error) {
+    return new Response(JSON.stringify({ message: task.error }), {
+      status: 400,
+    });
+  }
   return new Response(JSON.stringify({ task }), { status: 200 });
 };
 
@@ -36,6 +41,11 @@ export const PATCH = async (req) => {
       status: 400,
     });
   }
+  if (task.error) {
+    return new Response(JSON.stringify({ message: task.error }), {
+      status: 400,
+    });
+  }
   return new Response(JSON.stringify({ task }), { status: 200 });
 };
 
@@ -49,5 +59,10 @@ export const DELETE = async (req) => {
     return new Response({ message: "userId is required" }, { status: 400 });
   const id = req.nextUrl.pathname.split("/").at(-1);
   const task = await service.deleteTask({ id, userId });
+  if (task.error) {
+    return new Response(JSON.stringify({ message: task.error }), {
+      status: 400,
+    });
+  }
   return new Response(JSON.stringify({ task }), { status: 200 });
 };

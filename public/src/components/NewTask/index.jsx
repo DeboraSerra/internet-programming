@@ -8,13 +8,21 @@ const newTaskUrl = constants.TASK_URL + "?userId=67311a177bb55a6ce6df4947";
 
 function NewTask() {
   const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState(1);
   const [repeat, setRepeat] = useState(false);
+  const [times, setTimes] = useState(1);
 
   async function submitForm(e) {
+    // validate fields
+    // check if repeat is true
+    // run the the fetch method "POST" the selected amount of times of repeat
+    // if repeat is true: increment date by one for each task `times` amount
+    // const taskDate = new Date(date);
+    // taskDate.setDate(taskDate.getDate() + 1)
+    // else: transform date and make the fetch one time
+    // after the end of the last fetch, redirect page to dashboard
     e.preventDefault();
     console.log("prevent");
   }

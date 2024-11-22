@@ -1,158 +1,144 @@
+"use client";
+
+
+import React, { useEffect, useState } from "react";
 import constants from "@/script/constants";
-import { FaStar } from "react-icons/fa";
 import "./style.css";
+import { FaSpinner, FaStar, FaTrash } from "react-icons/fa";
+import { useParams, useRouter } from "next/navigation";
+import toastEmitter, { TOAST_EMITTER_KEY } from "../Toast/toastEmitter";
+import TaskCard from "./TaskCard";
 
-const dashboardUrl = constants.TASK_URL + "?userId=67311a177bb55a6ce6df4947";
+const dashboardUrl = constants.TASK_URL
 
-const tasks = {
-  tasks: [
-    {
-      id: "6733dd6eb73a1e228a5859b0",
-      name: "Task 4",
-      date: "2024-11-12T22:29:52.052Z",
-      description: "This is a description for task 4",
-      completed: true,
-      priority: 2,
-      createdAt: "2024-11-12T00:00:00.000Z",
-      userId: "67311a177bb55a6ce6df4947",
-    },
-    {
-      id: "6733dd6eb73a1e228a5859af",
-      name: "Task 3",
-      date: "2024-11-12T22:29:52.052Z",
-      description: "This is a description for task 3",
-      completed: true,
-      priority: 5,
-      createdAt: "2024-11-12T00:00:00.000Z",
-      userId: "67311a177bb55a6ce6df4947",
-    },
-    {
-      id: "6733dd6eb73a1e228a5859b3",
-      name: "Task 7",
-      date: "2024-11-12T22:29:52.052Z",
-      description: "This is a description for task 7",
-      completed: true,
-      priority: 4,
-      createdAt: "2024-11-12T00:00:00.000Z",
-      userId: "67311a177bb55a6ce6df4947",
-    },
-    {
-      id: "6733dd6eb73a1e228a5859b4",
-      name: "Task 8",
-      date: "2024-11-12T22:29:52.052Z",
-      description: "This is a description for task 8",
-      completed: false,
-      priority: 3,
-      createdAt: "2024-11-12T00:00:00.000Z",
-      userId: "67311a177bb55a6ce6df4947",
-    },
-    {
-      id: "6733dd6eb73a1e228a5859ae",
-      name: "Task 2",
-      date: "2024-11-12T22:29:52.052Z",
-      description: "This is a description for task 2",
-      completed: true,
-      priority: 4,
-      createdAt: "2024-11-12T00:00:00.000Z",
-      userId: "67311a177bb55a6ce6df4947",
-    },
-    {
-      id: "6733dd6eb73a1e228a5859b1",
-      name: "Task 5",
-      date: "2024-11-13T22:29:52.052Z",
-      description: "This is a description for task 5",
-      completed: false,
-      priority: 4,
-      createdAt: "2024-11-13T22:29:52.052Z",
-      userId: "67311a177bb55a6ce6df4947",
-    },
-    {
-      id: "6733dd6eb73a1e228a5859ad",
-      name: "Task 1",
-      date: "2024-11-13T22:29:52.052Z",
-      description: "This is a description for task 1",
-      completed: false,
-      priority: 3,
-      createdAt: "2024-11-13T22:29:52.052Z",
-      userId: "67311a177bb55a6ce6df4947",
-    },
-    {
-      id: "6733dd6eb73a1e228a5859b5",
-      name: "Task 9",
-      date: "2024-11-13T22:29:52.052Z",
-      description: "This is a description for task 9",
-      completed: false,
-      priority: 2,
-      createdAt: "2024-11-13T22:29:52.052Z",
-      userId: "67311a177bb55a6ce6df4947",
-    },
-    {
-      id: "6733dd6eb73a1e228a5859b2",
-      name: "Task 6",
-      date: "2024-11-13T22:29:52.052Z",
-      description: "This is a description for task 6",
-      completed: false,
-      priority: 3,
-      createdAt: "2024-11-13T22:29:52.052Z",
-      userId: "67311a177bb55a6ce6df4947",
-    },
-    {
-      id: "6733dd6eb73a1e228a5859b6",
-      name: "Task 10",
-      date: "2024-11-13T22:29:52.052Z",
-      description: "This is a description for task 10",
-      completed: false,
-      priority: 3,
-      createdAt: "2024-11-12T00:00:00.000Z",
-      userId: "67311a177bb55a6ce6df4947",
-    },
-  ],
-};
+async function fetchDashboardData(id) {
+  try {
+    const url = dashboardUrl + "?userId=" + id
+    const response = await fetch(url);
+
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    console.log("Dashboard data fetched successfully:", data);
+    console.log({data})
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch dashboard data:", error);
+    return null;
+  }
+}
 
 function Dashboard() {
-  const filteredTasks = {};
-  for (const task of tasks.tasks) {
-    const currDate = task.date;
+  const [tasks, setTasks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true)
+  const router = useRouter();
+  const { id } = useParams();
+
+  async function loadData() {
+    const data = await fetchDashboardData(id);
+    if (!data.tasks.length) {
+      router.push(`/${id}/new-task`)
+    } else if (data.tasks) {
+      setTasks(parseTasks(data));
+    }
+    setIsLoading(false)
+  }
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  async function handleDelete(taskId, userId){
+    setIsLoading(true)
+    const url = constants.TASK_URL + `/${taskId}?userId=${userId}`
+    const result = await fetch(url, {method:'DELETE'})
+    const data = await result.json()
+    if(data.task){
+      const newList = []
+      for (const item of tasks) {
+        if (item.id !== data.task.id) {
+          newList.push(item)
+        }
+      }
+      setTasks(newList)
+    }else{
+      toastEmitter(
+        TOAST_EMITTER_KEY, "Task couldn't be deleted, try again"
+      )
+    }
+    setIsLoading(false)
+  }
+async function handlePatch(taskId, userId){
+  const url = constants.TASK_URL + `/${taskId}?userId=${userId}`
+  const result = await fetch(url, {method:'PATCH'})
+  const data = await result.json()
+    if(data.task){
+      const newList = []
+      for (const item of tasks) {
+        if (item.id !== data.task.id) {
+          newList.push(item)
+        } else {
+          newList.push({...item, completed: !item.completed})
+        }
+      }
+      setTasks(newList)
+    }else{
+      toastEmitter(
+        TOAST_EMITTER_KEY, "Task couldn't be updated, try again"
+      )
+    }
+    setIsLoading(false)
+  
+}
+
+
+  function parseTasks(data) {
+    const filteredTasks = {};
+  for (let i = 0; i < data.tasks.length; i += 1) {
+    const currTask = data.tasks[i];
+    const currDate = currTask.date;
     if (filteredTasks[currDate]) {
-      filteredTasks[currDate].push(task);
+      filteredTasks[currDate].push(currTask);
     } else {
-      filteredTasks[currDate] = [task];
+      filteredTasks[currDate] = [currTask];
     }
   }
+
   const arrayOfTasks = Object.entries(filteredTasks);
-  const parsedTasks = [];
-  for (const [date, tasks] of arrayOfTasks) {
-    parsedTasks.push({ date, tasks });
+  const parsedTasks = arrayOfTasks.map(([date, taskList]) => ({
+    date,
+    tasks: taskList,
+  }));
+  return parsedTasks.filter((it) =>{ 
+  const taskDate = new Date(it.date).toDateString()
+  const today = new Date().toDateString()
+  console.log({task: new Date(taskDate), today: new Date(today)})
+  return new Date(taskDate) >= new Date(today)})
   }
+
+  if (!isLoading && !tasks.length) {
+    router.push(`/${id}/new-task`)
+  }
+
+  if (isLoading) {
+    return <div><FaSpinner className="animate-spin" /></div>
+  }
+
   return (
-    <div className='dashboard py-3 px-8'>
-      <div className='dashboard-header'></div>
+    <div className="dashboard py-3 px-8">
+      <div className="dashboard-header"></div>
       <div>
-        {parsedTasks.map((it) => (
-          <>
-            <h2 className='task-header border-b border-slate-400'>
+        {tasks.sort((a,b) => new Date(a.date) - new Date(b.date)).map((it, index) => (
+          <div key={index}>
+            <h2 className="date-header font-bold text-lg py-3 border-b border-slate-400">
               {new Date(it.date).toLocaleDateString()}
             </h2>
             {it.tasks.map((task) => (
-              <div key={task.id} className='task'>
-                <div className='task-header border-b border-slate-400'>
-                  <input
-                    type='checkbox'
-                    checked={task.completed}
-                    readOnly
-                    className='task-checkbox'
-                  />
-                  <span className='task-name'>{task.name}</span>
-                  <span className={`task-priority priority-${task.priority}`}>
-                    <FaStar />
-                  </span>
-                </div>
-                <div className='task-details border-b border-slate-400'>
-                  <span className='task-desc'>{task.description}</span>
-                </div>
-              </div>
+              <TaskCard task={task} onDelete={handleDelete} onChecked={handlePatch} key={task.id} />
             ))}
-          </>
+          </div>
         ))}
       </div>
     </div>

@@ -1,3 +1,6 @@
+import toastEmitter, {
+  TOAST_EMITTER_KEY,
+} from "@/components/Toast/toastEmitter";
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -27,15 +30,25 @@ export const onLoadUser = async () => {
 };
 
 const createUser = async (user) => {
+  const { email, displayName, photoURL, phone = "", birthday = "" } = user;
   const response = await fetch(`/api/user`, {
     method: "POST",
     body: JSON.stringify({
-      email: user.email,
-      name: user.displayName,
-      photo: user.photoURL,
+      email: email,
+      name: displayName ?? "",
+      photo: photoURL ?? "",
+      phone,
+      birthday,
     }),
   });
-  if (response.status >= 400) throw new Error("");
+  if (response.status >= 400) {
+    const result = await response?.json();
+    if (result.error) {
+      result.error.forEach((it) => {
+        toastEmitter.emit(TOAST_EMITTER_KEY, it.message);
+      });
+    }
+  }
   const foundUser = await response.json();
   localStorage.setItem("userData", JSON.stringify(foundUser.user));
   return foundUser;
@@ -56,11 +69,13 @@ export const googleLogin = async () => {
       foundUser = await response.json();
     }
     localStorage.setItem("userData", JSON.stringify(foundUser.user));
+    toastEmitter.emit(TOAST_EMITTER_KEY, "Login successful");
     return `/${foundUser.user.id}/dashboard`;
   } catch (error) {
     console.error(error);
     const user = auth.currentUser;
     user.delete();
+    toastEmitter.emit(TOAST_EMITTER_KEY, "Something went wrong");
   }
 };
 
@@ -70,12 +85,21 @@ export const passwordLogin = async ({ email, password }) => {
     let user = data.user;
     const response = await fetch(`/api/user?email=${user.email}`);
     const foundUser = await response.json();
-    if (!foundUser)
-      throw new Error("Email not registered or credentials invalid");
+    if (!foundUser) {
+      toastEmitter.emit(
+        TOAST_EMITTER_KEY,
+        "Email not registered or credentials invalid"
+      );
+      return;
+    }
     localStorage.setItem("userData", JSON.stringify(foundUser.user));
+    toastEmitter.emit(TOAST_EMITTER_KEY, "Login successful");
     return `/${foundUser.user.id}/dashboard`;
   } catch (e) {
     console.log(e);
+    if (e.message.includes("(auth/invalid-credential)")) {
+      toastEmitter.emit(TOAST_EMITTER_KEY, "Email or password is wrong");
+    } else toastEmitter.emit(TOAST_EMITTER_KEY, "Something went wrong");
   }
 };
 
@@ -89,11 +113,17 @@ export const createAccount = async ({ email, password }) => {
     let user = data.user;
     const response = await createUser(user);
     if (!response) throw new Error("");
+    toastEmitter.emit(TOAST_EMITTER_KEY, "Login successful");
     return `/${response.user.id}/dashboard`;
   } catch (e) {
     console.log(e);
-    const user = auth.currentUser;
-    user.delete();
+    if (e.message.includes("(auth/email-already-in-use)")) {
+      toastEmitter.emit(TOAST_EMITTER_KEY, "Email already in use");
+    } else {
+      toastEmitter.emit(TOAST_EMITTER_KEY, "Something went wrong");
+      const user = auth.currentUser;
+      user.delete();
+    }
   }
 };
 
