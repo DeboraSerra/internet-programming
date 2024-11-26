@@ -67,3 +67,11 @@
 .input.textarea:focus ~ .input__label {
   transform: scale(0.7) translate(-20%, -20%);
 }
+
+.input__icon {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
