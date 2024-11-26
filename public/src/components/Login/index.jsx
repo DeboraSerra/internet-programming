@@ -3,10 +3,10 @@ import { validateEmail, validatePassword } from "@/script/helpers.js";
 import { useRouter } from "next/navigation.js";
 import { useEffect, useState } from "react";
 import * as auth from "../../../assets/script/auth.js";
-import Button from "../Button";
-import Input from "../ControlledInput/index.jsx";
 import toastEmitter, { TOAST_EMITTER_KEY } from "../Toast/toastEmitter.js";
 import CreateAccount from "./CreateAccount.jsx";
+import Input from "../Input";
+import Button from "../LoginButton/index.jsx";
 
 function Login() {
   const [state, setState] = useState({

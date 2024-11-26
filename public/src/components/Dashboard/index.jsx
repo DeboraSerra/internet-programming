@@ -1,6 +1,7 @@
 "use client";
 
 import constants from "@/script/constants";
+import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Loading from "../Loading";
@@ -64,6 +65,7 @@ function Dashboard() {
       date,
       tasks: taskList,
     }));
+    setIsLoading(false);
     return parsedTasks.filter((it) => {
       const taskDate = new Date(it.date).toDateString();
       const today = new Date().toDateString();
@@ -71,8 +73,23 @@ function Dashboard() {
     });
   }
 
+  console.log({ tasks });
+
   if (!isLoading && !tasks.length) {
-    router.push(`/${id}/new-task`);
+    return (
+      <div className='min-h-96 flex flex-col items-center justify-center gap-5'>
+        <p className='max-w-[500px] text-center flex items-center text-slate-800 text-2xl'>
+          You don&apos;t have any task yet or all your tasks were due before{" "}
+          {new Date().toDateString()}
+        </p>
+        <Link
+          className='flex items-center text-blue-500 text-xl underline hover:text-blue-600'
+          href={`/${id}/new-task`}
+        >
+          Add a new task
+        </Link>
+      </div>
+    );
   }
 
   if (isLoading) {
@@ -94,7 +111,7 @@ function Dashboard() {
                 {new Date(it.date).toLocaleDateString()}
               </h2>
               {it.tasks.map((task) => (
-                <TaskCard task={task} setTasks={setTasks} key={task.id} />
+                <TaskCard task={task} setTasks={setTasks} key={task.id} tasks={tasks} />
               ))}
             </div>
           ))}

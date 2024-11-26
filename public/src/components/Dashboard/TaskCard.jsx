@@ -1,10 +1,11 @@
 import constants from "@/script/constants";
 import { useRouter } from "next/navigation";
+import PropType from "prop-types";
 import { useState } from "react";
 import { FaStar, FaTrash } from "react-icons/fa";
 import Loading from "../Loading";
 
-const TaskCard = ({ task, setTasks }) => {
+const TaskCard = ({ task, setTasks, tasks }) => {
   const [isHovering, setIsHovering] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -21,9 +22,13 @@ const TaskCard = ({ task, setTasks }) => {
     const result = await fetch(url, { method: "DELETE" });
     const data = await result.json();
     if (data.task) {
-      setTasks((prev) =>
-        prev.filter((it) => !it.tasks.some((task) => task.id === taskId))
-      );
+      const newList = [];
+      for (const item of tasks) {
+        if (item.id !== data.task.id) {
+          newList.push(item);
+        }
+      }
+      setTasks(newList);
     } else {
       toastEmitter(TOAST_EMITTER_KEY, "Task couldn't be deleted, try again");
     }
@@ -35,14 +40,15 @@ const TaskCard = ({ task, setTasks }) => {
     const result = await fetch(url, { method: "PATCH" });
     const data = await result.json();
     if (data.task) {
-      setTasks((prev) =>
-        prev.map((it) => ({
-          ...it,
-          tasks: it.tasks.map((task) =>
-            task.id === taskId ? { ...task, completed: !task.completed } : task
-          ),
-        }))
-      );
+      const newList = [];
+      for (const item of tasks) {
+        if (item.id !== data.task.id) {
+          newList.push(item);
+        } else {
+          newList.push({ ...item, completed: !item.completed });
+        }
+      }
+      setTasks(newList);
     } else {
       toastEmitter(TOAST_EMITTER_KEY, "Task couldn't be updated, try again");
     }
@@ -102,6 +108,30 @@ const TaskCard = ({ task, setTasks }) => {
       </p>
     </div>
   );
+};
+
+TaskCard.propTypes = {
+  task: PropType.shape({
+    id: PropType.number,
+    name: PropType.string,
+    description: PropType.string,
+    priority: PropType.number,
+    completed: PropType.bool,
+    date: PropType.string,
+    userId: PropType.number,
+  }).isRequired,
+  tasks: PropType.arrayOf(
+    PropType.shape({
+      id: PropType.number,
+      name: PropType.string,
+      description: PropType.string,
+      priority: PropType.number,
+      completed: PropType.bool,
+      date: PropType.string,
+      userId: PropType.number,
+    })
+  ).isRequired,
+  setTasks: PropType.func.isRequired,
 };
 
 export default TaskCard;
