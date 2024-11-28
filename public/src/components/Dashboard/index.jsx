@@ -2,11 +2,13 @@
 
 import constants from "@/script/constants";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import "./style.css";
 import TaskCard from "./TaskCard";
+import Loading from "../Loading";
+import toastEmitter, { TOAST_EMITTER_KEY } from "../Toast/toastEmitter";
 
 const dashboardUrl = constants.TASK_URL;
 
@@ -22,7 +24,7 @@ async function fetchDashboardData(id) {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Failed to fetch dashboard data:", error);
+    toastEmitter.emit(TOAST_EMITTER_KEY, `Failed to fetch dashboard data: ${error.message}`);
     return null;
   }
 }
@@ -30,16 +32,11 @@ async function fetchDashboardData(id) {
 function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
   const { id } = useParams();
 
   async function loadData() {
     const data = await fetchDashboardData(id);
-    if (!data.tasks.length) {
-      router.push(`/${id}/new-task`);
-    } else if (data.tasks) {
-      setTasks(parseTasks(data));
-    }
+    setTasks(parseTasks(data));
   }
   useEffect(() => {
     loadData();
@@ -69,8 +66,6 @@ function Dashboard() {
     });
   }
 
-  console.log({ tasks });
-
   if (!isLoading && !tasks.length) {
     return (
       <div className='min-h-96 flex flex-col items-center justify-center gap-5'>
@@ -91,7 +86,7 @@ function Dashboard() {
   if (isLoading) {
     return (
       <div className='min-h-96 flex items-center justify-center'>
-        <FaSpinner className='animate-spin' />
+        <Loading />
       </div>
     );
   }

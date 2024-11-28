@@ -15,14 +15,6 @@ function NewTask() {
   const [times, setTimes] = useState(1);
 
   async function submitForm(e) {
-    // validate fields
-    // check if repeat is true
-    // run the the fetch method "POST" the selected amount of times of repeat
-    // if repeat is true: increment date by one for each task `times` amount
-    // const taskDate = new Date(date);
-    // taskDate.setDate(taskDate.getDate() + 1)
-    // else: transform date and make the fetch one time
-    // after the end of the last fetch, redirect page to dashboard
     e.preventDefault();
     console.log("prevent");
   }
@@ -38,15 +30,6 @@ function NewTask() {
           id='date'
           onChange={(e) => setDate(e.target.value)}
           min={new Date().toISOString().split("T")[0]}
-        />
-
-        
-        <Input
-          type='time'
-          label="Hour"
-          value={time}
-          id='time'
-          onChange={(e) => setTime(e.target.value)}
         />
 
         <Input
