@@ -1,6 +1,8 @@
+import constants from "@/script/constants";
 import PropType from "prop-types";
 import { useState } from "react";
-import { FaSpinner, FaStar, FaTrash } from "react-icons/fa";
+import { FaStar, FaTrash } from "react-icons/fa";
+import Loading from "../Loading";
 
 const TaskCard = ({ task, tasks, setTasks }) => {
   const [isHovering, setIsHovering] = useState(false);
@@ -19,8 +21,12 @@ const TaskCard = ({ task, tasks, setTasks }) => {
     if (data.task) {
       const newList = [];
       for (const item of tasks) {
-        if (item.id !== data.task.id) {
-          newList.push(item);
+        const newTask = {
+          date: item.date,
+          tasks: item.tasks.filter((t) => t.id !== data.task.id),
+        };
+        if (newTask.tasks.length) {
+          newList.push(newTask);
         }
       }
       setTasks(newList);
@@ -37,11 +43,13 @@ const TaskCard = ({ task, tasks, setTasks }) => {
     if (data.task) {
       const newList = [];
       for (const item of tasks) {
-        if (item.id !== data.task.id) {
-          newList.push(item);
-        } else {
-          newList.push({ ...item, completed: !item.completed });
-        }
+        const newTask = {
+          date: item.date,
+          tasks: item.tasks.map((t) =>
+            t.id === data.task.id ? { ...t, completed: !t.completed } : t
+          ),
+        };
+        newList.push(newTask);
       }
       setTasks(newList);
     } else {
@@ -51,8 +59,8 @@ const TaskCard = ({ task, tasks, setTasks }) => {
   }
 
   return isLoading ? (
-    <div className='w-full h-[85px] flex items-center justify-center'>
-      <FaSpinner className='animate-spin' />
+    <div className='h-[41px] flex items-center gap-3 px-3 border-b border-slate-400'>
+      <Loading size={26} />
     </div>
   ) : (
     <div
@@ -60,9 +68,10 @@ const TaskCard = ({ task, tasks, setTasks }) => {
       onMouseLeave={() => setIsHovering(false)}
       className='task'
     >
-      <div className='task-header flex items-center gap-3 py-2 px-3 border-b border-slate-400'>
+      <div className='h-[41px] flex items-center gap-3 px-3 border-b border-slate-400'>
         <input
           type='checkbox'
+          id={`complete-${task.id}`}
           checked={task.completed}
           readOnly
           className='task-checkbox'
@@ -72,7 +81,9 @@ const TaskCard = ({ task, tasks, setTasks }) => {
             setIsLoading(false);
           }}
         />
-        <span className='task-name grow'>{task.name}</span>
+        <label htmlFor={`complete-${task.id}`} className='grow text-lg'>
+          {task.name}
+        </label>
         <span className='cursor-pointer w-[18px]'>
           {isHovering && (
             <FaTrash
@@ -88,9 +99,9 @@ const TaskCard = ({ task, tasks, setTasks }) => {
           <FaStar />
         </span>
       </div>
-      <div className='task-details border-b border-slate-400'>
-        <span className='task-desc'>{task.description}</span>
-      </div>
+      <p className='flex items-center justify-start p-2 text-sm text-slate-700 h-[41px] border-b border-slate-400'>
+        {task.description}
+      </p>
     </div>
   );
 };

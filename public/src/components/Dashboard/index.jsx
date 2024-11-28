@@ -4,15 +4,14 @@ import constants from "@/script/constants";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FaSpinner } from "react-icons/fa";
-import "./style.css";
-import TaskCard from "./TaskCard";
 import Loading from "../Loading";
 import toastEmitter, { TOAST_EMITTER_KEY } from "../Toast/toastEmitter";
+import "./style.css";
+import TaskCard from "./TaskCard";
 
 const dashboardUrl = constants.TASK_URL;
 
-async function fetchDashboardData(id) {
+export async function fetchDashboardData(id) {
   try {
     const url = dashboardUrl + "?userId=" + id;
     const response = await fetch(url);
@@ -24,9 +23,35 @@ async function fetchDashboardData(id) {
     const data = await response.json();
     return data;
   } catch (error) {
-    toastEmitter.emit(TOAST_EMITTER_KEY, `Failed to fetch dashboard data: ${error.message}`);
+    toastEmitter.emit(
+      TOAST_EMITTER_KEY,
+      `Failed to fetch dashboard data: ${error.message}`
+    );
     return null;
   }
+}
+
+export function parseTasks(data) {
+  const filteredTasks = {};
+  for (const currTask of data.tasks) {
+    const currDate = currTask.date;
+    if (filteredTasks[currDate]) {
+      filteredTasks[currDate].push(currTask);
+    } else {
+      filteredTasks[currDate] = [currTask];
+    }
+  }
+
+  const arrayOfTasks = Object.entries(filteredTasks);
+  const parsedTasks = arrayOfTasks.map(([date, taskList]) => ({
+    date,
+    tasks: taskList,
+  }));
+  return parsedTasks.filter((it) => {
+    const taskDate = new Date(it.date).toDateString();
+    const today = new Date().toDateString();
+    return new Date(taskDate) >= new Date(today);
+  });
 }
 
 function Dashboard() {
@@ -37,34 +62,11 @@ function Dashboard() {
   async function loadData() {
     const data = await fetchDashboardData(id);
     setTasks(parseTasks(data));
+    setIsLoading(false);
   }
   useEffect(() => {
     loadData();
   }, []);
-
-  function parseTasks(data) {
-    const filteredTasks = {};
-    for (const currTask of data.tasks) {
-      const currDate = currTask.date;
-      if (filteredTasks[currDate]) {
-        filteredTasks[currDate].push(currTask);
-      } else {
-        filteredTasks[currDate] = [currTask];
-      }
-    }
-
-    const arrayOfTasks = Object.entries(filteredTasks);
-    const parsedTasks = arrayOfTasks.map(([date, taskList]) => ({
-      date,
-      tasks: taskList,
-    }));
-    setIsLoading(false);
-    return parsedTasks.filter((it) => {
-      const taskDate = new Date(it.date).toDateString();
-      const today = new Date().toDateString();
-      return new Date(taskDate) >= new Date(today);
-    });
-  }
 
   if (!isLoading && !tasks.length) {
     return (
@@ -99,7 +101,7 @@ function Dashboard() {
           .sort((a, b) => new Date(a.date) - new Date(b.date))
           .map((it, index) => (
             <div key={index}>
-              <h2 className='date-header font-bold text-lg py-3 border-b border-slate-400'>
+              <h2 className='flex items-center font-bold text-lg h-[41px] border-b border-slate-400 border-t'>
                 {new Date(it.date).toLocaleDateString()}
               </h2>
               {it.tasks.map((task) => (
