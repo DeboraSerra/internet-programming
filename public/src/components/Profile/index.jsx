@@ -2,10 +2,11 @@
 
 import constants from "@/script/constants";
 import { maskPhone } from "@/script/helpers";
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Button from "../Button";
-import Input from "../Input";
+import Input from "../ControlledInput";
 import Loading from "../Loading";
 import toastEmitter, { TOAST_EMITTER_KEY } from "../Toast/toastEmitter";
 import "./profile.css";
@@ -18,9 +19,7 @@ const defaultState = {
   name: "",
   birthday: "",
   phone: "000-000-0000",
-  instagram: "",
   email: "",
-  password: "",
   profilePicture: "",
 };
 
@@ -107,13 +106,15 @@ const Profile = () => {
   return (
     <div className='profile-container'>
       <div className='profile-header'>
-        <img
+        <Image
           src={
             profile.profilePicture ||
             "https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg"
           }
           alt='Profile'
           className='profile-picture'
+          width={150}
+          height={150}
         />
         <h2>{profile.name}</h2>
       </div>
