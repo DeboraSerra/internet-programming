@@ -11,6 +11,7 @@ import Loading from "../Loading";
 import toastEmitter, { TOAST_EMITTER_KEY } from "../Toast/toastEmitter";
 import "./profile.css";
 import EditPassword from "./ResetPassword";
+import placeholder from "../../../assets/user_placeholder.jpg";
 
 const getUserUrl = constants.USER_URL + `?email=`;
 const updateUserUrl = constants.USER_URL + `?id=`;
@@ -109,12 +110,12 @@ const Profile = () => {
         <Image
           src={
             profile.profilePicture ||
-            "https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg"
+            placeholder
           }
           alt='Profile'
           className='profile-picture'
-          width={150}
-          height={150}
+          width={200}
+          height={200}
         />
         <h2>{profile.name}</h2>
       </div>
