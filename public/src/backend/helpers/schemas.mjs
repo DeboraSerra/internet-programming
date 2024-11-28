@@ -98,12 +98,12 @@ const updateUserSchema = (user) => {
 const createTaskSchema = (task) => {
   const { name, description, date, priority = 1, userId } = task;
   const validations = [];
-  if (name.trim().length < 4)
+  if (name?.trim().length < 4)
     validations.push({
       field: "name",
       message: "Name must be at least 4 characters long",
     });
-  if (description.trim() && description.length < 4) {
+  if (description?.trim() && description.length < 4) {
     validations.push({
       field: "description",
       message: "Description must be at least 4 characters long",
@@ -127,9 +127,9 @@ const createTaskSchema = (task) => {
     });
   }
   if (
-    !userId.trim() ||
+    !userId?.trim() ||
     typeof userId !== "string" ||
-    userId.trim().length !== 24
+    userId?.trim().length !== 24
   ) {
     validations.push({
       field: "userId",
@@ -137,9 +137,9 @@ const createTaskSchema = (task) => {
     });
   }
   return {
-    success: validations.length !== 0,
+    success: validations.length === 0,
     error: validations,
-    data: validations.length === 0 ? null : task,
+    data: validations.length !== 0 ? null : task,
   };
 };
 

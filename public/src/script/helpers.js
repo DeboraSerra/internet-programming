@@ -1,6 +1,5 @@
 function validateEmail(email) {
   const charactersAllowed = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  console.log("Email Validation", charactersAllowed.test(email));
   return charactersAllowed.test(email);
 }
 

@@ -9,7 +9,6 @@ async function createTask({ name, description, date, priority, userId }) {
 
 async function getTasks({ userId }) {
   const tasks = await prisma.task.findMany({ where: { userId } });
-  console.log({ tasks, userId })
   return tasks;
 }
 
