@@ -1,11 +1,14 @@
 "use client";
 import { useRouter } from "next/navigation.js";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as auth from "../../../assets/script/auth.js";
-import Input from "../Input";
+import Input from "../ControlledInput";
 import Button from "../LoginButton/index.jsx";
 
 function Login() {
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+
   const router = useRouter();
   useEffect(() => {
     auth.onLoadUser().then((user) => {
@@ -21,8 +24,8 @@ function Login() {
 
   return (
     <form action='' className='flex flex-col w-[250px] items-center gap-10'>
-      <Input id='email' type='email' label='Email' />
-      <Input id='password' type='password' label='Password' />
+      <Input id='email' type='email' label='Email' value={email} onChange={(e) => setEmail(e.target.value)} />
+      <Input id='password' type='password' label='Password' value={password} onChange={(e) => setPassword(e.target.value)} />
       <Button action='passwordLogin' type='submit' />
       <div className='flex w-full gap-2 items-center'>
         <Button
