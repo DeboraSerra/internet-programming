@@ -95,16 +95,15 @@ const TaskCard = ({ task, tasks, setTasks }) => {
           {task.name}
         </label>
         <span className='cursor-pointer w-[18px]'>
-          {isHovering ||
-            (isMobile && (
-              <FaTrash
-                onClick={async () => {
-                  setIsLoading(true);
-                  await onDelete(task.id, task.userId);
-                  setIsLoading(false);
-                }}
-              />
-            ))}
+          {(isHovering || isMobile) && (
+            <FaTrash
+              onClick={async () => {
+                setIsLoading(true);
+                await onDelete(task.id, task.userId);
+                setIsLoading(false);
+              }}
+            />
+          )}
         </span>
         <span className={`task-priority ${getPriorityClass(task.priority)}`}>
           <FaStar />
