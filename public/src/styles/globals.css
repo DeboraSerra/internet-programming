@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-image: url(../../assets/main-bg.avif);
+  background-size: cover;
+  background-position: center center;
+  min-height: 100vh; 
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#filters {
+  background-image: url(../../assets/main-bg.avif);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+@media (max-width: 768px) {
+  body {
+    background-size: cover;
+    background-position: center center;
+  }
+
+  .filters {
+    background-size: cover;
+    background-position: center center;
+  }
+}

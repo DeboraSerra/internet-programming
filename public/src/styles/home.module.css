@@ -1,0 +1,77 @@
+.input {
+  background-color: transparent;
+  border-bottom: 1px solid #94a3b8;
+  padding: 8px 4px;
+  border-radius: 4px;
+
+  &:focus {
+    outline: none;
+    background-color: rgb(148, 163, 184, 0.14);
+  }
+}
+
+.input__container {
+  position: relative;
+}
+
+.input__label {
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: 0.2s;
+}
+
+.input.textarea {
+  height: 120px;
+  resize: none;
+  position: relative;
+  border-bottom: none;
+  z-index: 2;
+}
+
+.input.textarea ~ .bg {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background: repeating-linear-gradient(
+    to bottom,
+    #94a3b8,
+    #94a3b8 1px,
+    transparent 1px,
+    transparent 40px
+  );
+  background-position: 0 38px;
+  background-repeat: no-repeat;
+}
+
+.input.textarea ~ .input__label {
+  top: 0;
+  transform: translateY(0);
+}
+
+.input:not(.input:placeholder-shown),
+.input:focus {
+  padding: 12px 4px 4px;
+}
+
+.input:not(.input:placeholder-shown) ~ .input__label,
+.input:focus ~ .input__label {
+  transform: scale(0.7) translate(-20%, -140%);
+}
+.input.textarea:not(.input:placeholder-shown) ~ .input__label,
+.input.textarea:focus ~ .input__label {
+  transform: scale(0.7) translate(-20%, -20%);
+}
+
+.input__icon {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
