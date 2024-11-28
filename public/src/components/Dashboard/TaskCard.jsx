@@ -1,12 +1,22 @@
 import constants from "@/script/constants";
 import PropType from "prop-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaStar, FaTrash } from "react-icons/fa";
 import Loading from "../Loading";
 
 const TaskCard = ({ task, tasks, setTasks }) => {
   const [isHovering, setIsHovering] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  }, [window.innerWidth]);
+
   const getPriorityClass = (priority) => {
     if (priority === 1) return "circumstantial";
     if (priority === 5) return "urgent";
@@ -85,15 +95,16 @@ const TaskCard = ({ task, tasks, setTasks }) => {
           {task.name}
         </label>
         <span className='cursor-pointer w-[18px]'>
-          {isHovering && (
-            <FaTrash
-              onClick={async () => {
-                setIsLoading(true);
-                await onDelete(task.id, task.userId);
-                setIsLoading(false);
-              }}
-            />
-          )}
+          {isHovering ||
+            (isMobile && (
+              <FaTrash
+                onClick={async () => {
+                  setIsLoading(true);
+                  await onDelete(task.id, task.userId);
+                  setIsLoading(false);
+                }}
+              />
+            ))}
         </span>
         <span className={`task-priority ${getPriorityClass(task.priority)}`}>
           <FaStar />
