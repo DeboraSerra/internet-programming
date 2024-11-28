@@ -25,10 +25,10 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: cd public && npm ci
+        run: npm ci
   
       - name: Build project
-        run: cd public && npm run build
+        run: npm run build
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           NEXT_PUBLIC_API_KEY: ${{ secrets.NEXT_PUBLIC_API_KEY }}
