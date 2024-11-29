@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import FilterMenu from "./FilterMenu";
 import { useParams, useRouter } from "next/navigation";
+import * as auth from "../../../assets/script/auth";
 
 const HeaderMenu = ({ isMobile }) => {
   const [renderFilters, setRenderFilters] = useState(false);
