@@ -5,13 +5,13 @@ import { maskPhone } from "@/script/helpers";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import placeholder from "../../../assets/user_placeholder.jpg";
 import Button from "../Button";
 import Input from "../ControlledInput";
 import Loading from "../Loading";
 import toastEmitter, { TOAST_EMITTER_KEY } from "../Toast/toastEmitter";
 import "./profile.css";
 import EditPassword from "./ResetPassword";
-import placeholder from "../../../assets/user_placeholder.jpg";
 
 const getUserUrl = constants.USER_URL + `?email=`;
 const updateUserUrl = constants.USER_URL + `?id=`;
@@ -40,7 +40,11 @@ const Profile = () => {
         throw new Error("Error fetching profile data");
       }
       const data = await response.json();
-      setProfile((prev) => ({ ...prev, ...data.user }));
+      setProfile((prev) => ({
+        ...prev,
+        ...data.user,
+        profilePicture: data.user.photo ?? "",
+      }));
     } catch (error) {
       toastEmitter.emit(
         TOAST_EMITTER_KEY,
@@ -108,10 +112,7 @@ const Profile = () => {
     <div className='profile-container'>
       <div className='profile-header'>
         <Image
-          src={
-            profile.profilePicture ||
-            placeholder
-          }
+          src={profile.profilePicture || placeholder}
           alt='Profile'
           className='profile-picture'
           width={200}
