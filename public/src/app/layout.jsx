@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import Toast from "@/components/Toast/Toast.jsx";
 import * as initialize from "../../assets/script/firebase.js";
 import "../styles/globals.css";
@@ -13,9 +14,10 @@ export default function RootLayout({ children }) {
       <head>
         <script src={JSON.parse(JSON.stringify(initialize))}></script>
       </head>
-      <body>
+      <body className="flex flex-col min-h-screen justify-between">
         <Toast />
         <div className='container mx-auto'>{children}</div>
+        <Footer />
       </body>
     </html>
   );
